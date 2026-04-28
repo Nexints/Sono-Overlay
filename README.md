@@ -1,10 +1,13 @@
 # pjsekai-overlay-APPEND / Forked PJSekai-style video creation tool
 
-Sonolus Overlay tool to add Music Video support and other extended gimmicks.
+Sonolus Overlay tool to add Music Video support and other extended gimmicks / skins / etc.
 
 > [!NOTE]
 > I am not affiliated with the original developer(s) in any way, shape or form.
-> This project DOES NOT USE any Project Sekai assets. All assets are made mostly by myself.
+>
+> This project DOES NOT USE any Project Sekai assets.
+>
+> All assets are made mostly by myself.
 
 This is a fork of [TootieJin](https://tootiejin.com)'s fork of [overlay software](https://github.com/sevenc-nanashi) (taken down) with non-Project Sekai assets, intended to provide my custom Rhythm Game skin towards custom charts unrelated to Project Sekai.
 
