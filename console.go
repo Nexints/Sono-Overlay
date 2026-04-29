@@ -11,33 +11,29 @@ import (
 func Title() {
 	fmt.Printf(
 		strings.TrimSpace(dedent.Dedent(`
-    %s-- pjsekai-overlay-%sAP%sPE%sND %sMaintenance -----------------------------------------------------------%s
-    %sフォークプロセカ風動画作成補助ツール / Forked PJSekai-style video creation tool%s
+    %s-- Sonolus %sOverlay %s -----------------------------------------------------------%s
+    %sOverlay Software used to add MVs and custom skins to Sonolus%s
 
         Version: %s%s%s*
-            * This is the maintenance fork. Updating is not required.
-            * これはメンテナンスフォークです。更新する必要はありません。
+            * This does not use any Sekai assets.
+			* This tool is primarily intended for English users.
 
         Developed by %s名無し｡(@sevenc-nanashi)%s
-            https://github.com/sevenc-nanashi/pjsekai-overlay
+            Link redacted for legal reasons.
         Forked by %sTootieJin & ぴぃまん(@Piliman22)%s
-            https://github.com/TootieJin/pjsekai-overlay-APPEND
+            Link redacted for legal reasons.
         Maintenance Fork by %sNexint%s
-         -> https://github.com/Nexints/pjsekai-overlay-APPEND-maintenance %s(使用中/In use)%s
+         -> https://github.com/Nexints/Sono-Overlay %s(In use)%s
 
-    %s[INFO] This is a hard fork of overlay. No new changes from the original project(s) will be synced here.%s
-    %sThis project is made to keep support of overlay even if the original project shuts down. Bug fixes / QOL only.%s
+    %s[INFO] This tool does NOT use Project Sekai assets.%s
+    %sNo documentation will be provided.%s
     %sI am not affiliated with the original developer in any way, shape or form.%s
-    %s私は、元の開発者とは一切関係がありません。%s
 	
     %s[CAUTION] This tool is primarily only for people with technical know-how and basic knowledge of AviUtl / AviUtl ExEdit2.%s 
     %sIf you have any questions/problems, please make a discussion thread. Refer to the wiki for how to set it up.%s
-
-    %s[注意] このツールは主に、技術的な知識とAviUtl / AviUtl ExEdit2の基本的な理解がある方のみを対象としています。%s 
-    %s質問や問題がある場合は、議論スレッドを作成してください。設定方法についてはWikiを参照してください。%s
     %s-------------------------------------------------------------------------------------%s
     `))+"\n",
-		RgbColorEscape(0x00afc7), RgbColorEscape(0xab93ff), RgbColorEscape(0xd388ed), RgbColorEscape(0xff8bf4), RgbColorEscape(0x00afc7), ResetEscape(),
+		RgbColorEscape(0x00afc7), RgbColorEscape(0xab93ff), RgbColorEscape(0x00afc7), ResetEscape(),
 		RgbColorEscape(0x00afc7), ResetEscape(),
 		RgbColorEscape(0x0f6ea3), pjsekaioverlay.Version, ResetEscape(),
 		RgbColorEscape(0x48b0d5), ResetEscape(),
@@ -47,9 +43,6 @@ func Title() {
 		RgbColorEscape(0x00ff00), ResetEscape(),
 		RgbColorEscape(0x00ff00), ResetEscape(),
 		RgbColorEscape(0x00ff00), ResetEscape(),
-		RgbColorEscape(0x00ff00), ResetEscape(),
-		RgbColorEscape(0xff0000), ResetEscape(),
-		RgbColorEscape(0xff0000), ResetEscape(),
 		RgbColorEscape(0xff0000), ResetEscape(),
 		RgbColorEscape(0xff0000), ResetEscape(),
 		RgbColorEscape(0xff5a91), ResetEscape(),
