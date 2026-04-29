@@ -16,7 +16,7 @@ func Title() {
 
         Version: %s%s%s*
             * This does not use any Sekai assets.
-			* This tool is primarily intended for English users.
+            * This tool is primarily intended for English users.
 
         Developed by %s名無し｡(@sevenc-nanashi)%s
             Link redacted for legal reasons.

@@ -1,4 +1,4 @@
-# Sono-Overlay / Forked PJSekai-style video creation tool
+# Sono-Overlay / Sonolus Music Video creation tool
 
 Sonolus Overlay tool to add Music Video support and other extended gimmicks / skins / etc.
 
