@@ -54,43 +54,7 @@ var banUrl string
 func BanList(name string) (bool, error) {
 
 	return false, nil
-	/*resp, err := http.Get(banUrl)
-	if err != nil {
-		return false, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return false, err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return false, fmt.Errorf("%d: %s", resp.StatusCode, http.StatusText(resp.StatusCode))
-	}
-
-	bodyStr := string(body)
-	if strings.HasPrefix(strings.TrimSpace(bodyStr), "4") || strings.HasPrefix(strings.TrimSpace(bodyStr), "5") {
-		return false, fmt.Errorf("ban list error: %s", bodyStr)
-	}
-
-	banList := strings.Split(string(body), "\n")
-	for _, bannedName := range banList {
-		hashtagCount := strings.Count(name, "#")
-		suffix := "#" + strings.Split(name, "#")[int(math.Max(0, float64(hashtagCount)-1))]
-
-		if strings.TrimSpace(bannedName) == name {
-			return true, nil
-		} else if strings.HasSuffix(strings.TrimSpace(bannedName), suffix) {
-			return true, nil
-		} else if strings.EqualFold(strings.TrimSpace(bannedName), strings.TrimSuffix(name, suffix)) {
-			return true, nil
-		}
-	}
-
-	return false, nil
-
-	no banlist, gatekeeping is bad <3 */
+	/*do this later (probably never btw because gatekeeping is bad)*/
 }
 
 func locale() (string, error) {

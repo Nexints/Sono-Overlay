@@ -19,7 +19,7 @@ func Title() {
             * This tool is primarily intended for English users.
 
         Developed by %s名無し｡(@sevenc-nanashi)%s
-            Link redacted for legal reasons.
+            Link taken down.
         Forked by %sTootieJin & ぴぃまん(@Piliman22)%s
             Link redacted for legal reasons.
         Maintenance Fork by %sNexint%s
