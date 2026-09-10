@@ -1,4 +1,4 @@
-package pjsekaioverlay
+package sonooverlay
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sonolus"
+	"github.com/Nexints/sono-overlay/pkg/sonolus"
 )
 
 type PedFrame struct {

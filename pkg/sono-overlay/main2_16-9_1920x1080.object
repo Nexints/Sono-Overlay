@@ -1,234 +1,393 @@
+;
+; Revamped Object File for ExEdit 2
+; Modified by: Nexint
+; Original: TootieJin
+;
 [0]
 layer=0
 frame=0,4000
 camera=0
 [0.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={dist}\background.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [0.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=120.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=27.50
+; Blend Mode | Normal
 合成モード=通常
 [1]
 layer=1
 frame=0,299
 camera=0
 [1.0]
+; Shape
 effect.name=図形
+; Shape | Shape Type | Background
 図形の種類=背景
+; Size
 サイズ=100
+; Aspect Ratio
 縦横比=0.00
+; Line Width
 ライン幅=4000
+; Color
 色=68689c
+; Rounded Corners
 角を丸くする=0
 [1.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=20.00
+; Blend Mode | Normal
 合成モード=通常
 [2]
 layer=1
 frame=300,395
 [2.0]
+; Group Control
 effect.name=グループ制御
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Target Layer Count
 対象レイヤー数=11
 [2.1]
+; Opacity
 effect.name=透明度
+; Opacity | Linear Motion
 透明度=100.00,0.00,直線移動,0
 [3]
 layer=2
 frame=60,179
 camera=0
 [3.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={assets}\start_grad.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [3.1]
+; Standard Drawing
 effect.name=標準描画
+; Deceleration | Accel/Decel
 X=0.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Y=1500.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Z=0.00,0.00,減速@加減速TRA,0|2
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=90.00
+; Blend Mode | Normal
 合成モード=通常
 [4]
 layer=2
 frame=180,299
 camera=0
 [4.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={assets}\start_grad.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [4.1]
+; Standard Drawing
 effect.name=標準描画
+; Deceleration | Accel/Decel
 X=0.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Y=1500.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Z=0.00,0.00,減速@加減速TRA,0|2
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=90.00
+; Blend Mode | Normal
 合成モード=通常
 [5]
 layer=3
 frame=0,111
 [5.0]
+; Group Control
 effect.name=グループ制御
+; Deceleration | Accel/Decel
 X=43.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Y=-43.00,0.00,減速@加減速TRA,0|2
+; Deceleration | Accel/Decel
 Z=0.00,0.00,減速@加減速TRA,0|2
 Group=1
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Target Layer Count
 対象レイヤー数=2
 [6]
 layer=3
 frame=270,299
 [6.0]
+; Group Control
 effect.name=グループ制御
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Target Layer Count
 対象レイヤー数=10
 [6.1]
+; Opacity
 effect.name=透明度
+; Opacity | Linear Motion
 透明度=0.00,100.00,直線移動,0
 [7]
 layer=3
-frame=300,4000
-camera=0
+frame=300,396,3550,4000
 [7.0]
-effect.name=画像ファイル
-ファイル={assets}\lane_full.png
-表示番号=0
-連番ファイル=0
+; Video File | File
+effect.name=動画ファイル
+; Playback Position
+再生位置=0.000
+; Playback Speed | Instant Move
+再生速度=0.00,100.00,0.00,100.00,瞬間移動,0
+; File
+ファイル=
+; Track
+トラック=0
+; Loop Playback
+ループ再生=0
+; With Audio
+音声付き=1
+YUV=
 [7.1]
-effect.name=標準描画
+; Video Playback
+effect.name=映像再生
 X=0.00
-Y=86.50
+Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
-拡大率=107.000
+; Scale
+拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
-合成モード=通常
+; Blend Mode | Multiply
+合成モード=乗算
+; Volume
+音量=100.00
+; Pan (L/R)
+左右=0.00
 [8]
 layer=4
 frame=0,299
 camera=0
 group=1
 [8.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={assets}\{difficulty}_bg.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [8.1]
+; Standard Drawing
 effect.name=標準描画
 X=-661.50
 Y=288.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=39.260
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [9]
 layer=4
 frame=300,396,3550,4000
 [9.0]
+; Video File | File
 effect.name=動画ファイル
+; Playback Position
 再生位置=0.000
+; Playback Speed | Instant Move
 再生速度=0.00,100.00,0.00,100.00,瞬間移動,0
+; File
 ファイル=
+; Track
 トラック=0
+; Loop Playback
 ループ再生=0
+; With Audio
 音声付き=1
 YUV=
 [9.1]
+; Video Playback
 effect.name=映像再生
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
+; Volume
 音量=100.00
+; Pan (L/R)
 左右=0.00
 [9.2]
 effect.name=unmult
@@ -236,42 +395,71 @@ effect.name=unmult
 layer=5
 frame=0,299
 [10.0]
+; Text
 effect.name=テキスト
+; Size
 サイズ=84.00
+; Character Spacing
 字間=0.00
+; Line Spacing
 行間=0.00
+; Display Speed
 表示速度=0.00
+; Font
 フォント=FOT-RodinNTLG Pro EB
+; Color | Text Color
 文字色=ffffff
+; Color | Shadow/Outline Color
 影・縁色=000000
+; Text Decoration | Standard Text
 文字装飾=標準文字
+; Alignment | Left Aligned [Top]
 文字揃え=左寄せ[上]
 B=0
 I=0
+; Text
 テキスト={text:difficulty}
+; Per-Character Objects
 文字毎に個別オブジェクト=0
+; Auto Scroll
 自動スクロール=0
+; Display on Moving Coordinates
 移動座標上に表示=0
+; Auto Adjust Object Length
 オブジェクトの長さを自動調節=0
 [10.1]
+; Standard Drawing
 effect.name=標準描画
 X=-855.00
 Y=446.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=38.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [10.2]
+; Text | Text Box Size | Auto Text Resize | Size
 effect.name=テキスト枠サイズ指定@テキスト自動リサイズ
+; Size
 Xサイズ=1020.0
+; Size
 Yサイズ=1080.0
 X有効=1
 Y有効=1
@@ -280,36 +468,55 @@ layer=6
 frame=0,299
 camera=0
 [11.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={assets}\collab-tag.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [11.1]
+; Standard Drawing
 effect.name=標準描画
 X=-166.00
 Y=217.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [11.2]
+; Scale
 effect.name=拡大率
+; Scale
 拡大率=100.000
 X=200.000
 Y=100.000
 Z=100.000
 [11.3]
+; Color Correction | Color
 effect.name=色調補正
 明るさ=100.00
 コントラスト=150.00
+; Color
 色相=0.00
 輝度=100.00
 彩度=100.00
@@ -318,42 +525,71 @@ effect.name=色調補正
 layer=7
 frame=0,299
 [12.0]
+; Text
 effect.name=テキスト
+; Size
 サイズ=72.00
+; Character Spacing
 字間=-0.40
+; Line Spacing
 行間=8.00
+; Display Speed
 表示速度=0.00
+; Font
 フォント=FOT-RodinNTLG Pro DB
+; Color | Text Color
 文字色=ffffff
+; Color | Shadow/Outline Color
 影・縁色=000000
+; Text Decoration | Standard Text
 文字装飾=標準文字
+; Alignment | Left Aligned [Top]
 文字揃え=左寄せ[上]
 B=0
 I=0
+; Text
 テキスト={text:extra}
+; Per-Character Objects
 文字毎に個別オブジェクト=0
+; Auto Scroll
 自動スクロール=0
+; Display on Moving Coordinates
 移動座標上に表示=0
+; Auto Adjust Object Length
 オブジェクトの長さを自動調節=0
 [12.1]
+; Standard Drawing
 effect.name=標準描画
 X=-380.00
 Y=200.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=38.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [12.2]
+; Text | Text Box Size | Auto Text Resize | Size
 effect.name=テキスト枠サイズ指定@テキスト自動リサイズ
+; Size
 Xサイズ=3350.0
+; Size
 Yサイズ=1080.0
 X有効=1
 Y有効=1
@@ -362,69 +598,116 @@ layer=7
 frame=300,4000
 group=2
 [13.0]
+; Settings
 effect.name=設定@pjsekai-overlay-2
+; File | PED File
 PEDファイル={dist}\data.ped
+; Offset
 オフセット={offset}
+; Cache
 キャッシュ={cache}
+; Text | Text Language
 テキスト言語={text_lang}
+; Watermark
 透かし={watermark}
+; Detailed Statistics
 詳細統計={detail_stat}
 [13.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [14]
 layer=8
 frame=0,299
 [14.0]
+; Text
 effect.name=テキスト
+; Size
 サイズ=96.00
+; Character Spacing
 字間=12.10
+; Line Spacing
 行間=8.00
+; Display Speed
 表示速度=0.00
+; Font
 フォント=FOT-RodinNTLG Pro EB
+; Color | Text Color
 文字色=ffffff
+; Color | Shadow/Outline Color
 影・縁色=000000
+; Text Decoration | Standard Text
 文字装飾=標準文字
+; Alignment | Left Aligned [Top]
 文字揃え=左寄せ[上]
 B=0
 I=0
+; Text
 テキスト={text:title}
+; Per-Character Objects
 文字毎に個別オブジェクト=0
+; Auto Scroll
 自動スクロール=0
+; Display on Moving Coordinates
 移動座標上に表示=0
+; Auto Adjust Object Length
 オブジェクトの長さを自動調節=0
 [14.1]
+; Standard Drawing
 effect.name=標準描画
 X=-378.50
 Y=274.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=40.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [14.2]
+; Text | Text Box Size | Auto Text Resize | Size
 effect.name=テキスト枠サイズ指定@テキスト自動リサイズ
+; Size
 Xサイズ=3350.0
+; Size
 Yサイズ=1080.0
 X有効=1
 Y有効=1
@@ -433,68 +716,113 @@ layer=8
 frame=300,4000
 group=2
 [15.0]
+; Life
 effect.name=ライフ@pjsekai-overlay-2
 X軸境界=6000
+; Life
 ライフ={life}
+; Skill Effect
 スキル効果={life_skill}
+; Life | Overflow Life Bar
 過剰なライフバー={overflow}
+; Leading Zero
 先行ゼロ={lead_zero}
 [15.1]
+; Standard Drawing
 effect.name=標準描画
 X=705.00
 Y=-477.50
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=17.330
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [16]
 layer=9
 frame=0,299
 [16.0]
+; Text
 effect.name=テキスト
+; Size
 サイズ=72.00
+; Character Spacing
 字間=-0.40
+; Line Spacing
 行間=8.00
+; Display Speed
 表示速度=0.00
+; Font
 フォント=FOT-RodinNTLG Pro DB
+; Color | Text Color
 文字色=ffffff
+; Color | Shadow/Outline Color
 影・縁色=000000
+; Text Decoration | Standard Text
 文字装飾=標準文字
+; Alignment | Left Aligned [Top]
 文字揃え=左寄せ[上]
 B=0
 I=0
+; Text
 テキスト={text:description-1}
+; Per-Character Objects
 文字毎に個別オブジェクト=0
+; Auto Scroll
 自動スクロール=0
+; Display on Moving Coordinates
 移動座標上に表示=0
+; Auto Adjust Object Length
 オブジェクトの長さを自動調節=0
 [16.1]
+; Standard Drawing
 effect.name=標準描画
 X=-380.00
 Y=364.50
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=38.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [16.2]
+; Text | Text Box Size | Auto Text Resize | Size
 effect.name=テキスト枠サイズ指定@テキスト自動リサイズ
+; Size
 Xサイズ=3350.0
+; Size
 Yサイズ=1080.0
 X有効=1
 Y有効=1
@@ -503,69 +831,115 @@ layer=9
 frame=300,4000
 group=2
 [17.0]
+; Score
 effect.name=スコア@pjsekai-overlay-2
 X軸境界=6000
+; Minimum Digits
 最小桁数={min_digit}
+; Skill Effect
 スキル効果={score_skill}
+; Animation Speed
 アニメーション速度={score_speed}
+; Animated Scoring
 アニメーション採点={anim_score}
+; YumeSute Animation
 「ユメステ」アニメーション={wds_anim}
 [17.1]
+; Standard Drawing
 effect.name=標準描画
 X=-583.50
 Y=-471.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [18]
 layer=10
 frame=0,299
 [18.0]
+; Text
 effect.name=テキスト
+; Size
 サイズ=72.00
+; Character Spacing
 字間=-0.40
+; Line Spacing
 行間=8.00
+; Display Speed
 表示速度=0.00
+; Font
 フォント=FOT-RodinNTLG Pro DB
+; Color | Text Color
 文字色=ffffff
+; Color | Shadow/Outline Color
 影・縁色=000000
+; Text Decoration | Standard Text
 文字装飾=標準文字
+; Alignment | Left Aligned [Top]
 文字揃え=左寄せ[上]
 B=0
 I=0
+; Text
 テキスト={text:description-2}
+; Per-Character Objects
 文字毎に個別オブジェクト=0
+; Auto Scroll
 自動スクロール=0
+; Display on Moving Coordinates
 移動座標上に表示=0
+; Auto Adjust Object Length
 オブジェクトの長さを自動調節=0
 [18.1]
+; Standard Drawing
 effect.name=標準描画
 X=-380.00
 Y=413.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=38.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [18.2]
+; Text | Text Box Size | Auto Text Resize | Size
 effect.name=テキスト枠サイズ指定@テキスト自動リサイズ
+; Size
 Xサイズ=3350.0
+; Size
 Yサイズ=1080.0
 X有効=1
 Y有効=1
@@ -574,117 +948,184 @@ layer=10
 frame=300,4000
 group=2
 [19.0]
+; Combo
 effect.name=コンボ@pjsekai-overlay-2
 X軸境界=6000
+; Combo | AP Combo
 APコンボ={ap}
+; Combo | Combo Tag
 コンボタグ={tag}
+; Show Last X Digits
 最後のX桁を表示={last_digit}
+; Animation Speed
 アニメーション速度={combo_speed}
+; Combo | n00 Combo Effect
 n00コンボ効果={combo_burst}
+; Achievement Rate Display
 達成率表示={achievement_rate}
 [19.1]
+; Standard Drawing
 effect.name=標準描画
 X=673.50
 Y=-63.50
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [20]
 layer=11
 frame=0,299
 camera=0
 [20.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={dist}\cover.png
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [20.1]
+; Standard Drawing
 effect.name=標準描画
 X=-618.00
 Y=245.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=78.750
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [21]
 layer=11
 frame=300,4000
 group=2
 [21.0]
+; Judgement
 effect.name=判定@pjsekai-overlay-2
+; Judgement | Judgement Type
 判定タイプ={judge}
+; Animation Speed
 アニメーション速度={judge_speed}
 [21.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=127.50
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=150.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [22]
 layer=12
 frame=60,90
 [22.0]
+; Group Control
 effect.name=グループ制御
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Target Layer Count
 対象レイヤー数=1
 [22.1]
+; Opacity
 effect.name=透明度
+; Opacity | Linear Motion
 透明度=100.00,0.00,直線移動,0
 [23]
 layer=12
 frame=300,4000
 group=2
 [23.0]
+; Auto
 effect.name=オート@pjsekai-overlay-2
 [23.1]
+; Standard Drawing
 effect.name=標準描画
 X=744.50
 Y=456.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [24]
 layer=13
@@ -692,53 +1133,86 @@ frame=0,59
 camera=0
 group=3
 [24.0]
+; Shape
 effect.name=図形
+; Shape | Shape Type | Background
 図形の種類=背景
+; Size
 サイズ=100
+; Aspect Ratio
 縦横比=0.00
+; Line Width
 ライン幅=4000
+; Color
 色=ffffff
+; Rounded Corners
 角を丸くする=0
 [24.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=-2.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=200.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity | Linear Motion
 透明度=0.00,100.00,直線移動,0
+; Blend Mode | Normal
 合成モード=通常
 [25]
 layer=13
 frame=60,299
 camera=0
 [25.0]
+; Image File | File
 effect.name=画像ファイル
+; File
 ファイル={assets}\{image:tournament}
+; Display Number
 表示番号=0
+; File | Sequential Files
 連番ファイル=0
 [25.1]
+; Standard Drawing
 effect.name=標準描画
 X=-740.00
 Y=13.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=70.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度={opacity}
+; Blend Mode | Normal
 合成モード=通常
 [26]
 layer=13
@@ -746,28 +1220,46 @@ frame=3620,4000
 camera=0
 group=4
 [26.0]
+; Shape
 effect.name=図形
+; Shape | Shape Type | Background
 図形の種類=背景
+; Size
 サイズ=100
+; Aspect Ratio
 縦横比=0.00
+; Line Width
 ライン幅=4000
+; Color
 色=000000
+; Rounded Corners
 角を丸くする=0
 [26.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=-2.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=200.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity | Linear Motion
 透明度=50.00,50.00,直線移動,0
+; Blend Mode | Normal
 合成モード=通常
 [27]
 layer=14
@@ -775,29 +1267,47 @@ frame=3620,4000
 camera=0
 group=4
 [27.0]
+; Video File | File
 effect.name=動画ファイル
+; Playback Position
 再生位置=0.000
+; Playback Speed
 再生速度=100.00
+; File
 ファイル={assets}\ap.mp4
+; Track
 トラック=0
+; Loop Playback
 ループ再生=0
+; With Audio
 音声付き=1
 YUV=
 [27.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常
 [27.2]
 effect.name=unmult
@@ -806,33 +1316,50 @@ layer=15
 frame=3620,4000
 group=4
 [28.0]
+; Audio File | File
 effect.name=音声ファイル
+; Playback Position
 再生位置=0.000
+; Playback Speed
 再生速度=100.00
+; File
 ファイル={assets}\ap.mp4
+; Track
 トラック=0
+; Loop Playback
 ループ再生=0
 [28.1]
+; Audio Playback
 effect.name=音声再生
+; Volume
 音量=100.00
+; Pan (L/R)
 左右=0.00
 [29]
 layer=16
 frame=3891,3935
 group=4
 [29.0]
+; Group Control
 effect.name=グループ制御
 X=0.00
 Y=0.00
 Z=0.00
 Group=1
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Target Layer Count
 対象レイヤー数=1
 [29.1]
+; Opacity
 effect.name=透明度
+; Opacity | Linear Motion
 透明度=100.00,0.00,直線移動,0
 [30]
 layer=17
@@ -840,26 +1367,44 @@ frame=3891,4000
 camera=0
 group=4
 [30.0]
+; Shape
 effect.name=図形
+; Shape | Shape Type | Background
 図形の種類=背景
+; Size
 サイズ=100
+; Aspect Ratio
 縦横比=0.00
+; Line Width
 ライン幅=4000
+; Color
 色=000000
+; Rounded Corners
 角を丸くする=0
 [30.1]
+; Standard Drawing
 effect.name=標準描画
 X=0.00
 Y=-2.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=200.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
+; Blend Mode | Normal
 合成モード=通常

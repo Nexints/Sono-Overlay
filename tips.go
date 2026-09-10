@@ -382,6 +382,9 @@ func Tips() {
 
 		"This tip is very unique, as:",
 		"It's the only tip that uses both lines.",
+
+		"heh",
+		"heh",
 	}
 
 	// これを見て何か追加したいTipsがあれば、PRを送ってください

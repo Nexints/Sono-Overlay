@@ -1,4 +1,4 @@
-package pjsekaioverlay
+package sonooverlay
 
 import (
 	_ "embed"

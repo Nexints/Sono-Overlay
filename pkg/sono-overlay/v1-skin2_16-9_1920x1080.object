@@ -163,29 +163,54 @@ Z軸回転=0.00
 合成モード=通常
 [7]
 layer=3
-frame=300,4000
-camera=0
+frame=300,396,3550,4000
 [7.0]
-effect.name=画像ファイル
-ファイル={assets}\lane-v1_full.png
-表示番号=0
-連番ファイル=0
+; Video File | File
+effect.name=動画ファイル
+; Playback Position
+再生位置=0.000
+; Playback Speed | Instant Move
+再生速度=0.00,100.00,0.00,100.00,瞬間移動,0
+; File
+ファイル=
+; Track
+トラック=0
+; Loop Playback
+ループ再生=0
+; With Audio
+音声付き=1
+YUV=
 [7.1]
-effect.name=標準描画
+; Video Playback
+effect.name=映像再生
 X=0.00
-Y=45.00
+Y=0.00
 Z=0.00
 Group=1
+; Center X
 中心X=0.00
+; Center Y
 中心Y=0.00
+; Center Z
 中心Z=0.00
+; X Rotation
 X軸回転=0.00
+; Y Rotation
 Y軸回転=0.00
+; Z Rotation
 Z軸回転=0.00
+; Scale
 拡大率=100.000
+; Aspect Ratio
 縦横比=0.000
+; Opacity
 透明度=0.00
-合成モード=通常
+; Blend Mode | Multiply
+合成モード=乗算
+; Volume
+音量=100.00
+; Pan (L/R)
+左右=0.00
 [8]
 layer=4
 frame=0,59

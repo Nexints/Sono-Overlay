@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/pjsekaioverlay"
+	"github.com/Nexints/sono-overlay/pkg/sonooverlay"
 	"github.com/lithammer/dedent"
 )
 

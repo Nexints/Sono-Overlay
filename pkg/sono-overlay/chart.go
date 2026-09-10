@@ -1,4 +1,4 @@
-package pjsekaioverlay
+package sonooverlay
 
 import (
 	"compress/gzip"
@@ -20,7 +20,7 @@ import (
 	"golang.org/x/image/draw"
 	_ "golang.org/x/image/webp"
 
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sonolus"
+	"github.com/Nexints/sono-overlay/pkg/sonolus"
 )
 
 type Source struct {

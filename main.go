@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/pjsekaioverlay"
+	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sono-overlay"
 	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sonolus"
 	"github.com/fatih/color"
 	"github.com/google/go-github/v57/github"
@@ -31,7 +31,7 @@ func checkUpdate() (string, string) {
 	}
 
 	latestVersion := strings.TrimPrefix(release.GetTagName(), "v")
-	if latestVersion == pjsekaioverlay.Version || pjsekaioverlay.Version == "0.0.0" {
+	if latestVersion == sonooverlay.Version || sonooverlay.Version == "0.0.0" {
 		return "", ""
 	}
 	return latestVersion, release.GetHTMLURL()
@@ -156,7 +156,7 @@ func origMain(isOptionSpecified bool) {
 
 	latestVer, releaseURL := checkUpdate()
 	if latestVer != "" {
-		fmt.Printf(color.HiCyanString("新しいバージョンがリリースされています\nNew version released: v%s -> v%s\n"), pjsekaioverlay.Version, latestVer)
+		fmt.Printf(color.HiCyanString("新しいバージョンがリリースされています\nNew version released: v%s -> v%s\n"), sonooverlay.Version, latestVer)
 		fmt.Printf(color.HiCyanString("ダウンロード (Download Here) -> %s\n"), releaseURL)
 		fmt.Println(color.RedString("\nINFO: pjsekai-overlay-APPEND-maintenanceを最新バージョンに更新してください。\nUpdate pjsekai-overlay-APPEND-maintenance to the latest version. Highly recommended."))
 	}
@@ -198,7 +198,7 @@ func origMain(isOptionSpecified bool) {
 		return
 	}
 
-	mappingName, mapping := pjsekaioverlay.SetOverlayDefault()
+	mappingName, mapping := sonooverlay.SetOverlayDefault()
 
 	if len(mapping) != 22 {
 		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL:「default.ini」ファイルのデータに異常があります。「default.ini」ファイルを削除し、プログラムを再起動して再生成してください。\nAbnormal \"default.ini\" data. Please regenerate by deleting the \"default.ini\" file and reopen the program.\n- Mapping count: %v != 22", len(mapping))))
@@ -276,13 +276,13 @@ func origMain(isOptionSpecified bool) {
 	case 1:
 		aviutlProcess = "aviutl.exe"
 		aviutlName = "AviUtl"
-		aviutlPath, _, _ = pjsekaioverlay.DetectAviUtl()
+		aviutlPath, _, _ = sonooverlay.DetectAviUtl()
 	case 2:
 		aviutlProcess = "aviutl2.exe"
 		aviutlName = "AviUtl ExEdit2"
 		aviutlPath, _ = filepath.Abs("C:\\ProgramData\\aviutl2")
 	default:
-		aviutlPath, aviutlProcess, aviutlName = pjsekaioverlay.DetectAviUtl()
+		aviutlPath, aviutlProcess, aviutlName = sonooverlay.DetectAviUtl()
 		if aviutlProcess != "" {
 			fmt.Printf("Instance (auto-detected): %s\n", color.GreenString(aviutlName))
 		}
@@ -302,7 +302,7 @@ func origMain(isOptionSpecified bool) {
 			case "1":
 				aviutlProcess = "aviutl.exe"
 				aviutlName = "AviUtl"
-				aviutlPath, _, _ = pjsekaioverlay.DetectAviUtl()
+				aviutlPath, _, _ = sonooverlay.DetectAviUtl()
 				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpAviutl))
 				fmt.Println(color.GreenString("Instance: AviUtl"))
 			case "2":
@@ -317,21 +317,21 @@ func origMain(isOptionSpecified bool) {
 
 	var successInstall = false
 	if !skipAviutlModConfig {
-		success := pjsekaioverlay.ModifyAviUtlConfig(aviutlPath, aviutlProcess)
+		success := sonooverlay.ModifyAviUtlConfig(aviutlPath, aviutlProcess)
 		if success {
 			fmt.Println(color.GreenString(aviutlName + "の設定変更が正常に完了しました。(" + aviutlName + " configurations successfully modified.)"))
 			successInstall = true
 		}
 	}
 	if !skipAviutlInstall {
-		success := pjsekaioverlay.TryInstallObject(aviutlPath, aviutlProcess, mappingStr)
+		success := sonooverlay.TryInstallObject(aviutlPath, aviutlProcess, mappingStr)
 		if success {
 			fmt.Println(color.GreenString(aviutlName + "オブジェクトのインストールに成功しました。(" + aviutlName + " object successfully installed.)"))
 			successInstall = true
 		}
 	}
 	if !skipAviutlScriptInstall {
-		success := pjsekaioverlay.TryInstallScript(aviutlPath, aviutlProcess)
+		success := sonooverlay.TryInstallScript(aviutlPath, aviutlProcess)
 		if success {
 			fmt.Println(color.GreenString(aviutlName + "依存関係スクリプトのインストールに成功しました。(" + aviutlName + " dependency scripts successfully installed.)"))
 			successInstall = true
@@ -368,9 +368,9 @@ func origMain(isOptionSpecified bool) {
 		fmt.Printf("\033[A\033[2K\r> %s\n", color.GreenString(chartInput))
 	}
 
-	var chartSource pjsekaioverlay.Source
+	var chartSource sonooverlay.Source
 	if strings.HasPrefix(chartId, "sync") {
-		chartSource, err = pjsekaioverlay.DetectLocalChartSource()
+		chartSource, err = sonooverlay.DetectLocalChartSource()
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
@@ -385,7 +385,7 @@ func origMain(isOptionSpecified bool) {
 			fmt.Scanln(&chartId)
 		}
 	} else {
-		chartSource, err = pjsekaioverlay.DetectChartSource(chartId, chartInstance)
+		chartSource, err = sonooverlay.DetectChartSource(chartId, chartInstance)
 		if err != nil {
 			fmt.Println(color.RedString("FAIL: 譜面が見つかりません。接頭辞も込め、正しい譜面IDを入力して下さい。\nChart not found. Please enter the correct chart ID including the prefix."))
 			return
@@ -403,7 +403,7 @@ func origMain(isOptionSpecified bool) {
 
 	var chart sonolus.LevelInfo
 	prefixTrim := checkSubstrings([]string{chartId}, "lalo-", "skyra-")
-	chart, err = pjsekaioverlay.FetchChart(chartSource, strings.TrimPrefix(chartId, prefixTrim))
+	chart, err = sonooverlay.FetchChart(chartSource, strings.TrimPrefix(chartId, prefixTrim))
 
 	if err != nil {
 		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
@@ -411,10 +411,10 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	// Additional BG
-	chartCCv1, _ := pjsekaioverlay.FetchChart(chartSource, chartId+"?c_background=v1")
-	chartUNv3, _ := pjsekaioverlay.FetchChart(chartSource, chartId+"?levelbg=v3")
-	chartUNv1, _ := pjsekaioverlay.FetchChart(chartSource, chartId+"?levelbg=v1")
-	chartUNv1def, _ := pjsekaioverlay.FetchChart(chartSource, chartId+"?levelbg=default_or_v1")
+	chartCCv1, _ := sonooverlay.FetchChart(chartSource, chartId+"?c_background=v1")
+	chartUNv3, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v3")
+	chartUNv1, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v1")
+	chartUNv1def, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=default_or_v1")
 
 	if chart.Engine.Version != 13 {
 		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL (ver.%d): エンジンのバージョンが古い。pjsekai-overlay-APPEND-maintenanceを最新版に更新してください。\nUnsupported engine version. Please update pjsekai-overlay-APPEND-maintenance to latest version.", chart.Engine.Version)))
@@ -452,7 +452,7 @@ func origMain(isOptionSpecified bool) {
 	fmt.Printf("- 出力先ディレクトリ (Output path): %s\n", color.CyanString(resultDir))
 
 	fmt.Print("- ジャケットをダウンロード中 (Downloading jacket)... ")
-	err = pjsekaioverlay.DownloadJacket(chartSource, chart, formattedOutDir)
+	err = sonooverlay.DownloadJacket(chartSource, chart, formattedOutDir)
 	if err != nil {
 		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 		return
@@ -461,7 +461,7 @@ func origMain(isOptionSpecified bool) {
 	fmt.Println(color.GreenString("OK"))
 
 	// fmt.Print("- 音声のプレビューをダウンロード中 (Downloading preview audio)... ")
-	// err = pjsekaioverlay.DownloadPreview(chartSource, chart, formattedOutDir)
+	// err = sonooverlay.DownloadPreview(chartSource, chart, formattedOutDir)
 	// if err != nil {
 	// 	fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 	// 	return
@@ -489,20 +489,20 @@ func origMain(isOptionSpecified bool) {
 	if customBG {
 		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
 
 		if chartSource.Id == "untitledcharts" {
-			err = pjsekaioverlay.DownloadBackground(chartSource, chartUNv1def, formattedOutDir, chartId+"?levelbg=default_or_v1", "", customBG)
+			err = sonooverlay.DownloadBackground(chartSource, chartUNv1def, formattedOutDir, chartId+"?levelbg=default_or_v1", "", customBG)
 			if err != nil {
 				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 				return
 			}
 		} else {
-			err = pjsekaioverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId+"/", "", customBG)
+			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId+"/", "", customBG)
 			if err != nil {
 				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 				return
@@ -511,13 +511,13 @@ func origMain(isOptionSpecified bool) {
 	} else if chartSource.Id == "untitledcharts" {
 		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chartUNv3, formattedOutDir, chartId+"?levelbg=v3", "", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chartUNv3, formattedOutDir, chartId+"?levelbg=v3", "", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chartUNv1, formattedOutDir, chartId+"?levelbg=v1", "", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chartUNv1, formattedOutDir, chartId+"?levelbg=v1", "", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
@@ -525,13 +525,13 @@ func origMain(isOptionSpecified bool) {
 	} else if chartSource.Id == "chart_cyanvas" && chartSource.Name != "Chart Cyanvas Archive" {
 		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chartCCv1, formattedOutDir, chartId+"?c_background=v1", "", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chartCCv1, formattedOutDir, chartId+"?c_background=v1", "", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
@@ -539,13 +539,13 @@ func origMain(isOptionSpecified bool) {
 	} else {
 		fmt.Print("- ローカルで背景を生成中 - お待ちください (Generating background locally - please wait)... ")
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 1", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 1", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
 
-		err = pjsekaioverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 3", customBG)
+		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 3", customBG)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
@@ -555,7 +555,7 @@ func origMain(isOptionSpecified bool) {
 	fmt.Println(color.GreenString("OK"))
 
 	fmt.Print("- 譜面を解析中 (Analyzing chart)... ")
-	levelData, err := pjsekaioverlay.FetchLevelData(chartSource, chart)
+	levelData, err := sonooverlay.FetchLevelData(chartSource, chart)
 
 	if err != nil {
 		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
@@ -611,7 +611,7 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	fmt.Print("- スコアを計算中 (Calculating score)... ")
-	scoreData := pjsekaioverlay.CalculateScore(chart, levelData, teamPower, scoreMode, allFlick)
+	scoreData := sonooverlay.CalculateScore(chart, levelData, teamPower, scoreMode, allFlick)
 
 	fmt.Println(color.GreenString("OK"))
 	if !isOptionSpecified {
@@ -636,7 +636,7 @@ func origMain(isOptionSpecified bool) {
 
 	fmt.Print("\n- pedファイルを生成中 (Generating ped file)... ")
 
-	err = pjsekaioverlay.WritePedFile(scoreData, assets, filepath.Join(formattedOutDir, "data.ped"), sonolus.LevelInfo{Rating: chart.Rating}, levelData, scoreMode, enUI)
+	err = sonooverlay.WritePedFile(scoreData, assets, filepath.Join(formattedOutDir, "data.ped"), sonolus.LevelInfo{Rating: chart.Rating}, levelData, scoreMode, enUI)
 
 	if err != nil {
 		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
@@ -698,9 +698,9 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	if aviutlProcess == "aviutl.exe" {
-		err = pjsekaioverlay.WriteExoFiles(assets, formattedOutDir, chart.Title, description, descriptionv1, difficulty, extra, exFile, exFileOpacity, mappingStr)
+		err = sonooverlay.WriteExoFiles(assets, formattedOutDir, chart.Title, description, descriptionv1, difficulty, extra, exFile, exFileOpacity, mappingStr)
 	} else {
-		err = pjsekaioverlay.WriteAliasFiles(assets, formattedOutDir, chart.Title, description, descriptionv1, difficulty, extra, exFile, exFileOpacity, mappingStr)
+		err = sonooverlay.WriteAliasFiles(assets, formattedOutDir, chart.Title, description, descriptionv1, difficulty, extra, exFile, exFileOpacity, mappingStr)
 	}
 
 	if err != nil {

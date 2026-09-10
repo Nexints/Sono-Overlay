@@ -28,6 +28,6 @@ Sono-Overlay:
 2. This tool **should not be used for malicious purposes** (such as, but not limited to: spreading misinformation on social media).
 3. The author **assumes no responsibility whatsoever** for any issues or disadvantages arising from the use of this tool. This tool is provided AS IS, with no warranties.
 4. (NEW) You are not allowed to use this tool when you use Datamined Project Sekai assets. This tool is intended to help provide MVs for Sonolus, not to break any copyright restrictions.
-5. TikTok usage is explicitly forbidden.
+5. (NEW) You are not to use this tool on other people's charts, unless you have express permission from said person.
 
 Please also check the [Nexint TOS](https://nexint.ca/tos) when using this tool!
