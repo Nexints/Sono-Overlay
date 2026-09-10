@@ -35,7 +35,7 @@ func Title() {
     `))+"\n",
 		RgbColorEscape(0x00afc7), RgbColorEscape(0xab93ff), RgbColorEscape(0x00afc7), ResetEscape(),
 		RgbColorEscape(0x00afc7), ResetEscape(),
-		RgbColorEscape(0x0f6ea3), pjsekaioverlay.Version, ResetEscape(),
+		RgbColorEscape(0x0f6ea3), sonooverlay.Version, ResetEscape(),
 		RgbColorEscape(0x48b0d5), ResetEscape(),
 		RgbColorEscape(0x48b0d5), ResetEscape(),
 		RgbColorEscape(0x48b0d5), ResetEscape(),
