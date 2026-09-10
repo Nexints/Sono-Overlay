@@ -15,8 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sono-overlay"
-	"github.com/Nexints/pjsekai-overlay-APPEND-maintenance/pkg/sonolus"
+	"github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
+	"github.com/Nexints/Sono-Overlay/pkg/sonolus"
 	"github.com/fatih/color"
 	"github.com/google/go-github/v57/github"
 	"github.com/srinathh/gokilo/rawmode"

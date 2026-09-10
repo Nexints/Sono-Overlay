@@ -1,10 +1,10 @@
-module github.com/Nexints/pjsekai-overlay-APPEND-maintenance
+module github.com/Nexints/Sono-Overlay
 
 go 1.23.0
 
 toolchain go1.23.3
 
-replace github.com/Nexints/pjsekai-overlay-APPEND-maintenance => ./
+replace github.com/Nexints/Sono-Overlay => ./
 
 require (
 	github.com/lithammer/dedent v1.1.0

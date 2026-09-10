@@ -20,7 +20,7 @@ import (
 	"golang.org/x/image/draw"
 	_ "golang.org/x/image/webp"
 
-	"github.com/Nexints/sono-overlay/pkg/sonolus"
+	"github.com/Nexints/Sono-Overlay/pkg/sonolus"
 )
 
 type Source struct {

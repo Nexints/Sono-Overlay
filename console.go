@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Nexints/sono-overlay/pkg/sonooverlay"
+	"github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
 	"github.com/lithammer/dedent"
 )
 

@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Nexints/sono-overlay/pkg/sonolus"
+	"github.com/Nexints/Sono-Overlay/pkg/sonolus"
 )
 
 type PedFrame struct {
