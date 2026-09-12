@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
+	sonooverlay "github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
 	"github.com/lithammer/dedent"
 )
 
@@ -15,19 +15,19 @@ func Title() {
     %sOverlay Software used to add MVs and custom skins to Sonolus%s
 
         Version: %s%s%s*
-            * This does not use any Sekai assets.
+            * This tool does not use any Sekai assets.
             * This tool is primarily intended for English users.
 
         Developed by %s名無し｡(@sevenc-nanashi)%s
             Link taken down.
         Forked by %sTootieJin & ぴぃまん(@Piliman22)%s
             Link redacted for legal reasons.
-        Maintenance Fork by %sNexint%s
+        Forked & Rebranded by %sNexint%s
          -> https://github.com/Nexints/Sono-Overlay %s(In use)%s
 
-    %s[INFO] This tool does NOT use Project Sekai assets.%s
-    %sNo documentation will be provided.%s
-    %sI am not affiliated with the original developer in any way, shape or form.%s
+    %s[INFO] This tool does not, and will not use Project Sekai assets.%s
+    %sNo documentation or help will be provided for this tool.%s
+    %sI am not affiliated with the original developer(s) in any way, shape or form.%s
 	
     %s[CAUTION] This tool is primarily only for people with technical know-how and basic knowledge of AviUtl / AviUtl ExEdit2.%s 
     %sIf you have any questions/problems, please make a discussion thread. Refer to the wiki for how to set it up.%s

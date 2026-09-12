@@ -1,4 +1,4 @@
--- pjsekai-overlay-APPEND-maintenance {version} by Nexint / Originally from TootieJin ----------------------------------
+-- Sono-Overlay {version} by Nexint / Originally from TootieJin ----------------------------------
 
 @設定
 --label:カスタムオブジェクト
@@ -177,14 +177,14 @@ else
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "Unable to read ped file!\n"..
-        "- Regenerate pjsekai-overlay."
+        "- Regenerate sono-overlay."
       )
     else
       obj.load(
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "pedファイルを読み取れません！\n"..
-        "- pjsekai-overlayを再生成してください。"
+        "- sono-overlayを再生成してください。"
       )
     end
   elseif PED_DATA.version == nil then
@@ -193,14 +193,14 @@ else
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "Version of the ped file is not set!\n"..
-        "- Regenerate pjsekai-overlay."
+        "- Regenerate sono-overlay."
       )
     else
       obj.load(
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "pedファイルのバージョンが設定されていません！\n"..
-        "- pjsekai-overlayを再生成してください。"
+        "- sono-overlayを再生成してください。"
       )
     end
   else
@@ -210,8 +210,8 @@ else
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "The version of the file is different!\n"..
         "[.obj: {version}, .ped: "..PED_DATA.version.."]\n\n"..
-        "- <s32,"..font..",B>If .obj is up to date:<s> Regenerate pjsekai-overlay.\n"..
-        "- <s32,"..font..",B>If .ped is up to date:<s> Regenerate object file. (Open AviUtl ExEdit2, then pjsekai-overlay-APPEND)\n"..
+        "- <s32,"..font..",B>If .obj is up to date:<s> Regenerate sono-overlay.\n"..
+        "- <s32,"..font..",B>If .ped is up to date:<s> Regenerate object file. (Open AviUtl ExEdit2, then sono-overlay-APPEND)\n"..
         "<s32,"..font..",B>DO NOT RENAME ped VERSION!<s>"
       )
     else
@@ -220,8 +220,8 @@ else
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "ファイルとのバージョンが違います！\n"..
         "[.obj: {version}, .ped: "..PED_DATA.version.."]\n\n"..
-        "- <s32,"..font..",B>.objが最新の場合:<s> pjsekai-overlayを再生成してください。\n"..
-        "- <s32,"..font..",B>.pedが最新の場合:<s> オブジェクトファイルを再生成してください。(AviUtl ExEdit2を開き、pjsekai-overlay-APPENDを実行)\n"..
+        "- <s32,"..font..",B>.objが最新の場合:<s> sono-overlayを再生成してください。\n"..
+        "- <s32,"..font..",B>.pedが最新の場合:<s> オブジェクトファイルを再生成してください。(AviUtl ExEdit2を開き、sono-overlay-APPENDを実行)\n"..
         "<s32,"..font..",B>pedバージョンの名前を変更しないでください！<s>"
       )
     end

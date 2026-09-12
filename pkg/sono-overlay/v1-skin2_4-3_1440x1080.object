@@ -222,7 +222,7 @@ Z軸回転=0.00
 ; Blend Mode | Multiply
 合成モード=乗算
 ; Volume
-音量=100.00
+音量=0.00
 ; Pan (L/R)
 左右=0.00
 [8]
@@ -435,7 +435,7 @@ layer=8
 frame=300,4000
 group=1
 [16.0]
-effect.name=設定@pjsekai-overlay-2-v1
+effect.name=設定@sono-overlay-2-v1
 PEDファイル={dist}\data.ped
 オフセット={offset}
 キャッシュ={cache}
@@ -508,7 +508,7 @@ frame=300,4000
 camera=0
 group=1
 [18.0]
-effect.name=ライフ@pjsekai-overlay-2-v1
+effect.name=ライフ@sono-overlay-2-v1
 X軸境界=6000
 ライフ={life}
 スキル効果={life_skill}
@@ -566,7 +566,7 @@ layer=10
 frame=300,4000
 group=1
 [20.0]
-effect.name=スコア@pjsekai-overlay-2-v1
+effect.name=スコア@sono-overlay-2-v1
 X軸境界=6000
 最小桁数={min_digit}
 スキル効果={score_skill}
@@ -611,7 +611,7 @@ layer=11
 frame=300,4000
 group=1
 [22.0]
-effect.name=コンボ@pjsekai-overlay-2-v1
+effect.name=コンボ@sono-overlay-2-v1
 X軸境界=6000
 APコンボ={ap}
 コンボタグ={tag}
@@ -667,7 +667,7 @@ layer=12
 frame=300,4000
 group=1
 [24.0]
-effect.name=判定@pjsekai-overlay-2-v1
+effect.name=判定@sono-overlay-2-v1
 判定タイプ={judge}
 アニメーション速度={judge_speed}
 [24.1]
@@ -719,7 +719,7 @@ layer=13
 frame=300,4000
 group=1
 [26.0]
-effect.name=オート@pjsekai-overlay-2-v1
+effect.name=オート@sono-overlay-2-v1
 [26.1]
 effect.name=標準描画
 X=562.00

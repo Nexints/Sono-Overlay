@@ -85,14 +85,23 @@ func FetchChart(source Source, chartId string) (sonolus.LevelInfo, error) {
 	return chart.Item, nil
 }
 
+// This part is not documented. I decided to document it here.
+// ID: identifies the charting server.
+// Name: The name of the server
+// Color: Hex code color for the server
+// Host: The source URL, without slashes, without https://
+// Status: The status. There are a couple of meanings:
+// 0: Normal server
+// 1: Server is dead (discontinued)
+// 2: Server is in beta. You have been warned.
 func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 	var source Source
-	if strings.HasPrefix(chartId, "sekai-rush-") {
+	if strings.HasPrefix(chartId, "sekai-best-") {
 		source = Source{
-			Id:     "proseka_rush",
-			Name:   "Proseka Rush",
+			Id:     "sekai_best",
+			Name:   "Sekai Best",
 			Color:  0x02cbbd,
-			Host:   "sekairush.com",
+			Host:   "sonolus.sekai.best",
 			Status: 0,
 		}
 	} else if strings.HasPrefix(chartId, "chcy-") {
@@ -102,7 +111,7 @@ func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 				Id:     "chart_cyanvas",
 				Name:   "Chart Cyanvas Archive",
 				Color:  0x83ccd2,
-				Host:   "cc.sevenc7c.com",
+				Host:   "cc.milkbun.org",
 				Status: 0,
 			}
 		case "1":
@@ -127,7 +136,7 @@ func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 			Id:     "potato_leaves",
 			Name:   "Potato Leaves",
 			Color:  0x88cb7f,
-			Host:   "ptlv.sevenc7c.com",
+			Host:   "ptlv.milkbun.org",
 			Status: 0,
 		}
 	} else if strings.HasPrefix(chartId, "utsk-") {
@@ -144,6 +153,22 @@ func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 			Name:   "UntitledCharts",
 			Color:  0x7765da,
 			Host:   "untitledcharts.com",
+			Status: 0,
+		}
+	} else if strings.HasPrefix(chartId, "coconut-horizon-") {
+		source = Source{
+			Id:     "horizon",
+			Name:   "Sonolus Horizon",
+			Color:  0x5b5c7c,
+			Host:   "coconut.sonolus.com/horizon",
+			Status: 2,
+		}
+	} else if strings.HasPrefix(chartId, "sss-") {
+		source = Source{
+			Id:     "sbuga",
+			Name:   "Sbuga",
+			Color:  0x5b5c7c,
+			Host:   "sonolus.sbuga.com",
 			Status: 0,
 		}
 	} else if strings.HasPrefix(chartId, "coconut-next-sekai-") {
@@ -352,7 +377,7 @@ func CopyFile(src, dst string) error {
 }
 
 func DownloadBackground(source Source, level sonolus.LevelInfo, destPath string, chartId string, arg string, customBG bool) error {
-	if source.Id == "proseka_rush" || source.Name == "Chart Cyanvas Archive" || source.Id == "potato_leaves" || source.Id == "local_server" || source.Id == "next_sekai" || (source.Id == "skyra" && !customBG) {
+	if source.Id == "sekai_best" || source.Id == "sbuga" || source.Name == "Chart Cyanvas Archive" || source.Id == "potato_leaves" || source.Id == "local_server" || source.Id == "next_sekai" || source.Id == "horizon" || (source.Id == "skyra" && !customBG) {
 		coverPath := path.Join(destPath, "cover.png")
 		if _, err := os.Stat(coverPath); os.IsNotExist(err) {
 			return fmt.Errorf("ジャケット画像が見つかりません。先にジャケット画像をダウンロードしてください。(Jacket image not found. Download jacket image first.)")
@@ -472,6 +497,9 @@ func DownloadBackground(source Source, level sonolus.LevelInfo, destPath string,
 }
 
 func DownloadBackgroundGenerator(destPath string) error {
+
+	// You shouldn't need this...?
+	// I bundled the background-gen already.
 	const downloadURL = "https://github.com/Nexints/pjsekai-background-gen-rust-maintenance/releases/download/v0.1.0/pjsekai-background-gen.exe"
 
 	resp, err := http.Get(downloadURL)

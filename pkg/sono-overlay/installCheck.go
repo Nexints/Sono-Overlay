@@ -94,43 +94,43 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			return false
 		}
 
-		var sekaiObjPath = filepath.Join(exeditRoot, "script", "@pjsekai-overlay.obj")
+		var sekaiObjPath = filepath.Join(exeditRoot, "script", "@sono-overlay.obj")
 		if _, err := os.Stat(sekaiObjPath); err == nil {
 			var sekaiObjFile, _ = os.OpenFile(sekaiObjPath, os.O_RDONLY, 0755)
 			defer sekaiObjFile.Close()
 			var sekaiObjDecoder = japanese.ShiftJIS.NewDecoder()
 			var existingSekaiObj, _ = io.ReadAll(transform.NewReader(sekaiObjFile, sekaiObjDecoder))
-			if strings.Contains(string(existingSekaiObj), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(existingSekaiObj), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}
-		var sekaiObjPathEn = filepath.Join(exeditRoot, "script", "@pjsekai-overlay-en.obj")
+		var sekaiObjPathEn = filepath.Join(exeditRoot, "script", "@sono-overlay-en.obj")
 		if _, err := os.Stat(sekaiObjPathEn); err == nil {
 			var sekaiObjFileEn, _ = os.OpenFile(sekaiObjPathEn, os.O_RDONLY, 0755)
 			defer sekaiObjFileEn.Close()
 			var sekaiObjDecoderEn = japanese.ShiftJIS.NewDecoder()
 			var existingSekaiObjEn, _ = io.ReadAll(transform.NewReader(sekaiObjFileEn, sekaiObjDecoderEn))
-			if strings.Contains(string(existingSekaiObjEn), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(existingSekaiObjEn), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}
-		var sekaiObjPathv1 = filepath.Join(exeditRoot, "script", "@pjsekai-overlay-v1.obj")
+		var sekaiObjPathv1 = filepath.Join(exeditRoot, "script", "@sono-overlay-v1.obj")
 		if _, err := os.Stat(sekaiObjPathv1); err == nil {
 			var sekaiObjFilev1, _ = os.OpenFile(sekaiObjPathv1, os.O_RDONLY, 0755)
 			defer sekaiObjFilev1.Close()
 			var sekaiObjDecoderv1 = japanese.ShiftJIS.NewDecoder()
 			var existingSekaiObjv1, _ = io.ReadAll(transform.NewReader(sekaiObjFilev1, sekaiObjDecoderv1))
-			if strings.Contains(string(existingSekaiObjv1), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(existingSekaiObjv1), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}
-		var sekaiObjPathEnv1 = filepath.Join(exeditRoot, "script", "@pjsekai-overlay-en-v1.obj")
+		var sekaiObjPathEnv1 = filepath.Join(exeditRoot, "script", "@sono-overlay-en-v1.obj")
 		if _, err := os.Stat(sekaiObjPathEnv1); err == nil {
 			var sekaiObjFileEnv1, _ = os.OpenFile(sekaiObjPathEnv1, os.O_RDONLY, 0755)
 			defer sekaiObjFileEnv1.Close()
 			var sekaiObjDecoderEnv1 = japanese.ShiftJIS.NewDecoder()
 			var existingSekaiObjEnv1, _ = io.ReadAll(transform.NewReader(sekaiObjFileEnv1, sekaiObjDecoderEnv1))
-			if strings.Contains(string(existingSekaiObjEnv1), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(existingSekaiObjEnv1), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}
@@ -316,20 +316,20 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			font = "Yu Gothic UI"
 		}
 
-		sekaiObj2Path := filepath.Join(aviutlPath, "Script", "@pjsekai-overlay-2.obj2")
-		sekaiObj2v1Path := filepath.Join(aviutlPath, "Script", "@pjsekai-overlay-2-v1.obj2")
+		sekaiObj2Path := filepath.Join(aviutlPath, "Script", "@sono-overlay-2.obj2")
+		sekaiObj2v1Path := filepath.Join(aviutlPath, "Script", "@sono-overlay-2-v1.obj2")
 
 		if err := os.MkdirAll(filepath.Join(aviutlPath, "Script"), 0755); err != nil {
 			return false
 		}
 
 		if data, err := os.ReadFile(sekaiObj2Path); err == nil {
-			if strings.Contains(string(data), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(data), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}
 		if data, err := os.ReadFile(sekaiObj2v1Path); err == nil {
-			if strings.Contains(string(data), "-- pjsekai-overlay-APPEND "+Version) && Version != "0.0.0" {
+			if strings.Contains(string(data), "-- sono-overlay "+Version) && Version != "0.0.0" {
 				return false
 			}
 		}

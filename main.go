@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
+	sonooverlay "github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
 	"github.com/Nexints/Sono-Overlay/pkg/sonolus"
 	"github.com/fatih/color"
 	"github.com/google/go-github/v57/github"
@@ -25,7 +25,7 @@ import (
 
 func checkUpdate() (string, string) {
 	githubClient := github.NewClient(nil)
-	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "Nexints", "pjsekai-overlay-APPEND-maintenance")
+	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "Nexints", "Sono-Overlay")
 	if err != nil {
 		return "", ""
 	}
@@ -148,7 +148,7 @@ func origMain(isOptionSpecified bool) {
 	flag.BoolVar(&allFlick, "all-flick", false, "すべてのノーツをフリックとして扱います。(Treat all notes as flicks.)")
 
 	flag.Usage = func() {
-		fmt.Println("Usage: pjsekai-overlay-APPEND-maintenance [オプション (Options)] [譜面ID (Chart ID)]")
+		fmt.Println("Usage: Sono-Overlay [オプション (Options)] [譜面ID (Chart ID)]")
 		flag.PrintDefaults()
 	}
 
@@ -158,7 +158,8 @@ func origMain(isOptionSpecified bool) {
 	if latestVer != "" {
 		fmt.Printf(color.HiCyanString("新しいバージョンがリリースされています\nNew version released: v%s -> v%s\n"), sonooverlay.Version, latestVer)
 		fmt.Printf(color.HiCyanString("ダウンロード (Download Here) -> %s\n"), releaseURL)
-		fmt.Println(color.RedString("\nINFO: pjsekai-overlay-APPEND-maintenanceを最新バージョンに更新してください。\nUpdate pjsekai-overlay-APPEND-maintenance to the latest version. Highly recommended."))
+		fmt.Println(color.RedString("\nFAIL: Sono-Overlayを最新バージョンに更新してください。\nFAIL: Please update Sono-Overlay to the latest version."))
+		fmt.Println(color.RedString("This program will run, but I will not provide support for this version of Sono-Overlay.\n"))
 	}
 
 	// removed forced updates lol
@@ -171,7 +172,7 @@ func origMain(isOptionSpecified bool) {
 		return
 	} else if locale != "ja-JP" {
 		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: お使いのシステムロケールが「日本語（日本）」に設定されていません。変更方法についてはWikiを参照してください。\nYour system locale is not set to \"Japanese (Japan)\". Refer to the wiki for how to change it.\n- System locale: %v", locale)))
-		fmt.Println(color.RedString(fmt.Sprintf("\nContinue at your own risk. I am not responsible for the events that happen here.")))
+		fmt.Println(color.RedString(fmt.Sprintf("\nThis program will run, but the output will be unusable till you install the language locale.")))
 	}
 
 	langPackCheck, err := langPackCheck()
@@ -179,7 +180,7 @@ func origMain(isOptionSpecified bool) {
 		fmt.Println(color.HiYellowString(fmt.Sprintf("WARN: 言語パックを確認できません。(Unable to check language pack.)\n%s", err.Error())))
 	} else if !strings.Contains(langPackCheck, "ja-JP") {
 		fmt.Println(color.RedString("\nFAIL: 日本語言語パックがインストールされていません。変更方法についてはWikiを参照してください。\nJapanese language pack is not installed. Refer to the wiki for how to install it."))
-		fmt.Println(color.RedString(fmt.Sprintf("\nContinue at your own risk. I am not responsible for the events that happen here.")))
+		fmt.Println(color.RedString(fmt.Sprintf("\nThis program will run, but the output will be unusable till you install the language pack.")))
 	}
 
 	// it still checks for JP language pack, but this is irrelevant to an EN user, and so i removed the forced JP settings
@@ -190,11 +191,11 @@ func origMain(isOptionSpecified bool) {
 		return
 	}
 	if isAdminPerm(cwd) {
-		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: ディレクトリには管理者権限が必要です。pjsekai-overlay-APPENDを「C:\\」または別の場所に移動してください。\nYour directory requires administrative permissions. Please move pjsekai-overlay-APPEND to \"C:\\\" or somewhere else.\n\n出力先ディレクトリ (Output path): %s", cwd)))
+		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: ディレクトリには管理者権限が必要です。Sono-Overlayを「C:\\」または別の場所に移動してください。\nYour directory requires administrative permissions. Please move Sono-Overlay to \"C:\\\" or somewhere else.\n\n出力先ディレクトリ (Output path): %s", cwd)))
 		return
 	}
 	if !isASCII(cwd) {
-		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: ディレクトリに非ASCII文字が含まれています。pjsekai-overlay-APPENDを「C:\\」または別の場所に移動してください。\nYour directory contains non-ASCII characters. Please move pjsekai-overlay-APPEND to \"C:\\\" or somewhere else.\n\n出力先ディレクトリ (Output path): %s", cwd)))
+		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: ディレクトリに非ASCII文字が含まれています。Sono-Overlayを「C:\\」または別の場所に移動してください。\nYour directory contains non-ASCII characters. Please move Sono-Overlay to \"C:\\\" or somewhere else.\n\n出力先ディレクトリ (Output path): %s", cwd)))
 		return
 	}
 
@@ -352,14 +353,31 @@ func origMain(isOptionSpecified bool) {
 		chartId = flag.Arg(0)
 		fmt.Printf("譜面ID (Chart ID): %s\n", color.GreenString(chartId))
 	} else {
-		fmt.Print("譜面IDを接頭辞込みで入力して下さい。\nEnter the chart ID including the prefix.\n\n'sekai-rush-': Proseka Rush (sekairush.com)\n'chcy-': Chart Cyanvas\n'ptlv-': Potato Leaves (ptlv.sevenc7c.com)\n'utsk-': Untitled Sekai (us.pim4n-net.com)\n'UnCh-': UntitledCharts (untitledcharts.com)\n'coconut-next-sekai-': Next SEKAI (coconut.sonolus.com/next-sekai)\n'lalo-': laoloser's server (sonolus.laoloser.com)\n'skyra-': osciris's server (Skyra)\n'sync-': Local Server (ScoreSync + ScoreSync Modern)\n> ")
+		var sb strings.Builder
+
+		sb.WriteString("譜面IDを接頭辞込みで入力して下さい。")
+		sb.WriteString("\nEnter the chart ID including the prefix.")
+		sb.WriteString("\n\n'sss-': Sbuga's Sonolus Server (sonolus.sbuga.com)")
+		sb.WriteString("\n'sekai-best-': Also try SSS (sonolus.sekai.best)")
+		sb.WriteString("\n'chcy-': Chart Cyanvas (cc.milkbun.org & offshoots)")
+		sb.WriteString("\n'ptlv-': Potato Leaves (ptlv.milkbun.org)")
+		sb.WriteString("\n'UnCh-': UntitledCharts (untitledcharts.com)")
+		sb.WriteString("\n'sync-': Local Server (ScoreSync + ScoreSync Modern)")
+		sb.WriteString("\n'coconut-next-sekai-': Next SEKAI (coconut.sonolus.com/next-sekai)")
+		sb.WriteString("\n'coconut-horizon-': Sonolus Horizon (coconut.sonolus.com/horizon) <-- Original Sonolus Rhythm Game")
+		sb.WriteString("\n* I have obtained permission to implement Sonolus Horizon into this overlay.\n")
+		sb.WriteString("\n> ")
+
+		// Convert back to a single string when done
+		result := sb.String()
+		fmt.Print(result)
 		fmt.Scanln(&chartId)
 		fmt.Printf("\033[A\033[2K\r> %s\n", color.GreenString(chartId))
 	}
 
 	// Instance section
 	if chartInstance == "" && strings.HasPrefix(chartId, "chcy-") {
-		fmt.Printf("\nChart Cyanvasインスタンスを選択してください。(Please choose Chart Cyanvas instance.)\n%s\n\n[インスタンス一覧 - List of instance(s)]\n'0': アーカイブ/Archive - cc.sevenc7c.com\n'1': 分岐サーバー/Offshoot server - chart-cyanvas.com\n> ", color.HiYellowString("(!) 別のインスタンスを持っていますか？URLドメインを入力してください。(Do you have a different instance? Input the URL domain.)"))
+		fmt.Printf("\nChart Cyanvasインスタンスを選択してください。(Please choose Chart Cyanvas instance.)\n%s\n\n[インスタンス一覧 - List of instance(s)]\n'0': アーカイブ/Archive - cc.milkbun.org\n'1': 分岐サーバー/Offshoot server - chart-cyanvas.com\n> ", color.HiYellowString("(!) 別のインスタンスを持っていますか？URLドメインを入力してください。(Do you have a different instance? Input the URL domain.)"))
 		var chartInput string
 		fmt.Scanln(&chartInput)
 		chartInput = strings.TrimPrefix(chartInput, "http://")
@@ -416,8 +434,9 @@ func origMain(isOptionSpecified bool) {
 	chartUNv1, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v1")
 	chartUNv1def, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=default_or_v1")
 
+	// I will update this when it breaks.
 	if chart.Engine.Version != 13 {
-		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL (ver.%d): エンジンのバージョンが古い。pjsekai-overlay-APPEND-maintenanceを最新版に更新してください。\nUnsupported engine version. Please update pjsekai-overlay-APPEND-maintenance to latest version.", chart.Engine.Version)))
+		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL (ver.%d): エンジンのバージョンが古い。Sono-Overlayを最新版に更新してください。\nUnsupported engine version. Please update Sono-Overlay to latest version.", chart.Engine.Version)))
 		return
 	}
 

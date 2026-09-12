@@ -295,7 +295,7 @@ Z軸回転=0.00
 ; Blend Mode | Multiply
 合成モード=乗算
 ; Volume
-音量=100.00
+音量=0.00
 ; Pan (L/R)
 左右=0.00
 [8]
@@ -599,7 +599,7 @@ frame=300,4000
 group=2
 [13.0]
 ; Settings
-effect.name=設定@pjsekai-overlay-2
+effect.name=設定@sono-overlay-2
 ; File | PED File
 PEDファイル={dist}\data.ped
 ; Offset
@@ -717,7 +717,7 @@ frame=300,4000
 group=2
 [15.0]
 ; Life
-effect.name=ライフ@pjsekai-overlay-2
+effect.name=ライフ@sono-overlay-2
 X軸境界=6000
 ; Life
 ライフ={life}
@@ -832,7 +832,7 @@ frame=300,4000
 group=2
 [17.0]
 ; Score
-effect.name=スコア@pjsekai-overlay-2
+effect.name=スコア@sono-overlay-2
 X軸境界=6000
 ; Minimum Digits
 最小桁数={min_digit}
@@ -949,7 +949,7 @@ frame=300,4000
 group=2
 [19.0]
 ; Combo
-effect.name=コンボ@pjsekai-overlay-2
+effect.name=コンボ@sono-overlay-2
 X軸境界=6000
 ; Combo | AP Combo
 APコンボ={ap}
@@ -1036,7 +1036,7 @@ frame=300,4000
 group=2
 [21.0]
 ; Judgement
-effect.name=判定@pjsekai-overlay-2
+effect.name=判定@sono-overlay-2
 ; Judgement | Judgement Type
 判定タイプ={judge}
 ; Animation Speed
@@ -1099,7 +1099,7 @@ frame=300,4000
 group=2
 [23.0]
 ; Auto
-effect.name=オート@pjsekai-overlay-2
+effect.name=オート@sono-overlay-2
 [23.1]
 ; Standard Drawing
 effect.name=標準描画

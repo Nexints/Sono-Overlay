@@ -168,6 +168,21 @@ var WEIGHT_MAP = map[string]float64{
 	"Skill":       0,
 	"FeverChance": 0,
 	"FeverStart":  0,
+
+	// Horzion Archetypes
+	"TapNote":        1,
+	"DoubleHoldNote": 0.2,
+	"SingleHoldNote": 0.1,
+
+	"RotateEvent":         0,
+	"ShiftEvent":          0,
+	"ZoomEvent":           0,
+	"LaneEffect":          0,
+	"LaneActivation":      0,
+	"SingleHoldConnector": 0,
+	"DoubleHoldConnector": 0,
+
+	// Horizon SHOULD be fully supported!
 }
 
 var ALL_FLICK = map[string]string{
@@ -191,6 +206,8 @@ var ALL_FLICK = map[string]string{
 	"CriticalTailTraceNote":   "CriticalTailTraceFlickNote",
 	"NormalTailReleaseNote":   "NormalTailFlickNote",
 	"CriticalTailReleaseNote": "CriticalTailFlickNote",
+
+	// No flicks even exist in Horizon.
 }
 
 func getValueFromData(data []sonolus.LevelDataEntityValue, name string) (float64, error) {

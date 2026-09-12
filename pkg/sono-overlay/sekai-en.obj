@@ -1,4 +1,4 @@
--- pjsekai-overlay-APPEND-maintenance {version} by Nexint / Originally from TootieJin ----------------------------------
+-- Sono-Overlay {version} by Nexint / Originally from TootieJin ----------------------------------
 
 @Root
 --dialog:PED File Path,file="";Text Language,text_lang={text_lang};Detailed Stats/chk,detail_stat={detail_stat}
@@ -8,7 +8,7 @@
 
 local font = "{font}"
 if obj.track1 ~= 1 or not PED_DATA or PED_DATA.file ~= file then
-  debug_print("[pjsekai-overlay] Loading ped data in " .. file)
+  debug_print("[sono-overlay] Loading ped data in " .. file)
   local time = os.clock()
   MAX_w, MAX_h = obj.getinfo("image_max")
   PED_DATA = {}
@@ -64,16 +64,16 @@ if obj.track1 ~= 1 or not PED_DATA or PED_DATA.file ~= file then
         end
       end
     end
-    debug_print("[pjsekai-overlay] Successfully loaded ped data")
-    debug_print("[pjsekai-overlay] Time (s): " .. os.clock() - time)
-    debug_print("[pjsekai-overlay] Version: " .. PED_DATA.version)
-    debug_print("[pjsekai-overlay] # of frames: " .. #PED_DATA.frames)
-    debug_print("[pjsekai-overlay] # of combo bursts: " .. #PED_DATA.combo)
+    debug_print("[sono-overlay] Successfully loaded ped data")
+    debug_print("[sono-overlay] Time (s): " .. os.clock() - time)
+    debug_print("[sono-overlay] Version: " .. PED_DATA.version)
+    debug_print("[sono-overlay] # of frames: " .. #PED_DATA.frames)
+    debug_print("[sono-overlay] # of combo bursts: " .. #PED_DATA.combo)
     fp:close()
   else
     PED_DATA.loaded = "cannot_open"
-    debug_print("[pjsekai-overlay] " .. err)
-    debug_print("[pjsekai-overlay] Couldn't open ped data file")
+    debug_print("[sono-overlay] " .. err)
+    debug_print("[sono-overlay] Couldn't open ped data file")
   end
 end
 if (PED_DATA.version == "{version}" or "{version}" == "0.0.0") and (MAX_w >= 2560 and MAX_h >= 2048) then
@@ -175,14 +175,14 @@ else
       "text",
       "<s32,"..font..",B>(! ERROR !)\n<s>"..
       "Unable to read ped file!\n"..
-      "- Regenerate pjsekai-overlay."
+      "- Regenerate sono-overlay."
     )
     else
       obj.load(
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "pedファイルを読み取れません！\n"..
-        "- pjsekai-overlayを再生成してください。"
+        "- sono-overlayを再生成してください。"
       )
     end
   elseif PED_DATA.version == nil then
@@ -191,14 +191,14 @@ else
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "Version of the ped file is not set!\n"..
-        "- Regenerate pjsekai-overlay."
+        "- Regenerate sono-overlay."
       )
     else
       obj.load(
         "text",
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "pedファイルのバージョンが設定されていません！\n"..
-        "- pjsekai-overlayを再生成してください。"
+        "- sono-overlayを再生成してください。"
       )
     end
   elseif MAX_w < 2560 or MAX_h < 2048 then
@@ -226,8 +226,8 @@ else
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "The version of the file is different!\n"..
         "[.obj: {version}, .ped: "..PED_DATA.version.."]\n\n"..
-        "- <s32,"..font..",B>If .obj is up to date:<s> Regenerate pjsekai-overlay.\n"..
-        "- <s32,"..font..",B>If .ped is up to date:<s> Regenerate object file. (Open AviUtl, then pjsekai-overlay-APPEND)\n"..
+        "- <s32,"..font..",B>If .obj is up to date:<s> Regenerate sono-overlay.\n"..
+        "- <s32,"..font..",B>If .ped is up to date:<s> Regenerate object file. (Open AviUtl, then sono-overlay-APPEND)\n"..
         "<s32,"..font..",B>DO NOT RENAME ped VERSION!<s>"
       )
     else
@@ -236,8 +236,8 @@ else
         "<s32,"..font..",B>(! ERROR !)\n<s>"..
         "ファイルとのバージョンが違います！\n"..
         "[.obj: {version}, .ped: "..PED_DATA.version.."]\n\n"..
-        "- <s32,"..font..",B>.objが最新の場合:<s> pjsekai-overlayを再生成してください。\n"..
-        "- <s32,"..font..",B>.pedが最新の場合:<s> オブジェクトファイルを再生成してください。(AviUtlを開き、pjsekai-overlay-APPENDを実行)\n"..
+        "- <s32,"..font..",B>.objが最新の場合:<s> sono-overlayを再生成してください。\n"..
+        "- <s32,"..font..",B>.pedが最新の場合:<s> オブジェクトファイルを再生成してください。(AviUtlを開き、sono-overlay-APPENDを実行)\n"..
         "<s32,"..font..",B>pedバージョンの名前を変更しないでください！<s>"
       )
     end
