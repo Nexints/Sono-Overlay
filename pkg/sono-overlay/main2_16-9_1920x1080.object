@@ -612,6 +612,8 @@ PEDファイル={dist}\data.ped
 透かし={watermark}
 ; Detailed Statistics
 詳細統計={detail_stat}
+; Custom Watermark
+カスタム透かし={custom_watermark}
 [13.1]
 ; Standard Drawing
 effect.name=標準描画

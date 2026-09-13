@@ -5,8 +5,6 @@ Sonolus Overlay tool to add Music Video support and other extended gimmicks / sk
 > [!NOTE]
 > I am not affiliated with the original developer(s) in any way, shape or form.
 >
-> This project DOES NOT USE any Project Sekai assets.
->
 > All assets are made by myself.
 
 This is a custom fork of [TootieJin](https://tootiejin.com)'s fork of [Nanashi's Overlay Software](https://github.com/sevenc-nanashi) (taken down) with non-Project Sekai assets, intended to provide my custom Rhythm Game skin towards Sonolus custom charts.
@@ -31,11 +29,26 @@ Sono-Overlay currently supports the following servers:
 Sono-Overlay has these extended features compared to the originals:
 - Dynamic Stage Support
 - Sonolus Horizon Support
+- Custom Watermarks (& Moving Watermarks)
+- `yt-dlp` Integration (add `yt-dlp`, `ffmpeg`, and `ffprobe` to an addons folder!)
+- Primary [AviUtl ExEdit 2](https://mints.ne.jp) Support
+
+Sono-Overlay has these features planned:
+- High:
+  - Custom ID (for a custom server)
+- Low:
+  - Skill Cards
+  - More Addons
+
+Sono-Overlay will not implement these features:
+- Score Maker Support
+- AviUtl support (AviUtl ExEdit 2 is better)
+- v1 UI support (legacy support for a UI that no longer exists)
 
 ## How to use
 
 Required programs:
-- AviUtl ExEdit 2 (Original Aviutl is supported, but left as legacy.)
+- [AviUtl ExEdit 2](https://mints.ne.jp)
 - LSMASH WORKS
 - MP4 Exporter
 - Powershell
@@ -96,4 +109,17 @@ Sono-Overlay:
 4. (NEW) You are not allowed to use this tool with official SEGA assets.
 5. (NEW) You are not to use this tool on other people's charts, unless you have express permission from said person.
 
-Please also check the [Nexint TOS](https://nexint.ca/tos) when using this tool!
+## Legal:
+The included ProSeka Faithful UI is governed under my [Nexint TOS](https://nexint.ca/tos).
+The program itself is under the AGPL-v3, as this is a fork of a program which is under the AGPL-V3.
+
+As of writing, this program is a hard fork of v0.5.5-b of pjsekai-overlay-APPEND. This is subject to change.
+
+Please check the [Nexint TOS](https://nexint.ca/tos) when using this tool with ProSeka Faithful!
+
+### AI Disclosure:
+Some parts of Sono-Overlay were coded with AI.
+
+Please forgive my lack of knowledge on Golang, AviUtl ExEdit2 syntax, etc!
+
+I've made sure to independantly tweak and test everything this program outputs.

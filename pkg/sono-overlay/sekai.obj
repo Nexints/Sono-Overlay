@@ -1,7 +1,7 @@
 -- Sono-Overlay {version} by Nexint / Originally from TootieJin ----------------------------------
 
 @設定
---dialog:PEDファイルパス,file="";テキスト言語,text_lang={text_lang};詳細統計/chk,detail_stat={detail_stat}
+--dialog:PEDファイルパス,file="";テキスト言語,text_lang={text_lang};詳細統計/chk,detail_stat={detail_stat};Custom Watermark/txt,custom_watermark="Default Watermark"
 --track0:オフセット,-99999.99,99999.99,{offset},0.01
 --track1:キャッシュ,0,1,{cache},1
 --check0:透かし,{watermark}
@@ -248,13 +248,28 @@ else
 end
 
 if obj.check0 and PED_DATA.version_status == "ok" then
+  local display_text = custom_watermark
+  if display_text == "" or display_text == nil then
+    display_text = "Default Watermark"
+  end
+
+  local credit_line = ""
+  if text_lang == 1 then
+    credit_line = "※Made with「Sono-Overlay」by Nexint."
+  else
+    credit_line = "※Nexint氏の「Sono-Overlay」を使用"
+  end
+
+  obj.line_space = -45
   obj.setfont(font, 100)
   obj.load(
       "text",
-      "Disable this watermark in the settings.\n"..
+      "<s100,"..font..",B>" .. display_text .. "\n" ..
+      credit_line .. "\n" ..
       "............................................................................<s>"
   )
   obj.draw(-614 - ((obj.screen_w/2) - (1920/2)), 513 + ((obj.screen_h/2) - (1080/2)), 0, 0.24, 0.5)
+  obj.line_space = 0
 end
 if detail_stat == 1 and PED_DATA.version_status == "ok" and not obj.getinfo("saving") then
   obj.setfont(font, 100)

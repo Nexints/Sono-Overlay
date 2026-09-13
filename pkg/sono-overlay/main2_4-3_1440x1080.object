@@ -405,6 +405,8 @@ PEDファイル={dist}\data.ped
 テキスト言語={text_lang}
 透かし={watermark}
 詳細統計={detail_stat}
+; Custom Watermark
+カスタム透かし={custom_watermark}
 [14.1]
 effect.name=標準描画
 X=0.00

@@ -36,3 +36,4 @@ default-override.ini
 .update-check
 !dependencies/*
 banlist.txt
+addons/*

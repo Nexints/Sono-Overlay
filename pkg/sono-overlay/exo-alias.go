@@ -90,6 +90,7 @@ func WriteExoFiles(assets string, destDir string, title string, description []st
 		"{image:tournament}", exFile,
 		"{opacity}", exFileOpacity,
 		"{difficulty}", strings.ToLower(difficulty),
+		"{custom_watermark}", encodeString(mappingFile[22]),
 		// Root
 		"{offset}", mappingFile[0], // track0
 		"{cache}", mappingFile[1], // track1
@@ -130,6 +131,7 @@ func WriteExoFiles(assets string, destDir string, title string, description []st
 		"{image:tournament}", exFile,
 		"{opacity}", exFileOpacity,
 		"{difficulty}", strings.ToLower(difficulty),
+		"{custom_watermark}", encodeString(mappingFile[22]),
 		// Root
 		"{offset}", mappingFile[0], // track0
 		"{cache}", mappingFile[1], // track1
@@ -309,6 +311,7 @@ func WriteAliasFiles(assets string, destDir string, title string, description []
 		"{image:tournament}", exFile,
 		"{opacity}", exFileOpacity,
 		"{difficulty}", strings.ToLower(difficulty),
+		"{custom_watermark}", mappingFile[22],
 		// Root
 		"{offset}", mappingFile[0],
 		"{cache}", mappingFile[1],
@@ -349,6 +352,7 @@ func WriteAliasFiles(assets string, destDir string, title string, description []
 		"{image:tournament}", exFile,
 		"{opacity}", exFileOpacity,
 		"{difficulty}", strings.ToLower(difficulty),
+		"{custom_watermark}", mappingFile[22],
 		// Root
 		"{offset}", mappingFile[0],
 		"{cache}", mappingFile[1],

@@ -48,13 +48,12 @@ func checkSubstrings(str []string, subs ...string) string {
 	return ""
 }
 
-//go:embed banlist.txt
-var banUrl string
-
 func BanList(name string) (bool, error) {
 
 	return false, nil
-	/*do this later (probably never btw because gatekeeping is bad)*/
+	/*
+		Due to the AGPL terms and conditions, I cannot have a ban list in my fork of pjsekai-overlay-APPEND.
+	*/
 }
 
 func locale() (string, error) {
@@ -154,6 +153,9 @@ func origMain(isOptionSpecified bool) {
 
 	flag.Parse()
 
+	cwd, err := os.Getwd()
+
+	// Version Checking
 	latestVer, releaseURL := checkUpdate()
 	if latestVer != "" {
 		fmt.Printf(color.HiCyanString("新しいバージョンがリリースされています\nNew version released: v%s -> v%s\n"), sonooverlay.Version, latestVer)
@@ -161,6 +163,76 @@ func origMain(isOptionSpecified bool) {
 		fmt.Println(color.RedString("\nFAIL: Sono-Overlayを最新バージョンに更新してください。\nFAIL: Please update Sono-Overlay to the latest version."))
 		fmt.Println(color.RedString("This program will run, but I will not provide support for this version of Sono-Overlay.\n"))
 	}
+
+	// Select screen
+	fmt.Print("\n起動モードを選択してください (Select Startup Mode):\n'1': 通常起動 [譜面解析 + ビデオ生成] (Default (Overlay))\n'2': メディアダウンローダー単体起動 (YT Download / Experimental)\n> ")
+	beforeStart, _ := rawmode.Enable()
+	tmpStartByte, _ := bufio.NewReader(os.Stdin).ReadByte()
+	tmpStart := string(tmpStartByte)
+	rawmode.Restore(beforeStart)
+
+	if tmpStart == "2" {
+		fmt.Printf("\n\033[A\033[2K\r> %s\n", color.HiCyanString("2"))
+		fmt.Println(color.GreenString("Mode: Standalone Downloader Mode"))
+
+		dlTargetDir := filepath.Join(cwd, "dist", "downloads")
+		if flag.Arg(0) != "" {
+			dlTargetDir = filepath.Join(cwd, "dist", flag.Arg(0))
+		} else {
+			fmt.Print("保存先のフォルダ名を入力してください（空欄で「downloads」）\nEnter destination folder name (Leave blank for 'downloads'):\n> ")
+			var customFolderName string
+			fmt.Scanln(&customFolderName)
+			customFolderName = strings.TrimSpace(customFolderName)
+			if customFolderName != "" {
+				dlTargetDir = filepath.Join(cwd, "dist", customFolderName)
+			}
+		}
+
+		if err := os.MkdirAll(dlTargetDir, 0755); err != nil {
+			fmt.Println(color.RedString(fmt.Sprintf("FAIL: Failed to create target directory: %s", err.Error())))
+			return
+		}
+
+		// ADDED: Friendly warning if they pick the downloader without installing files
+		ytdlpCheckPath := filepath.Join(cwd, "addons", "yt-dlp.exe")
+		if _, err := os.Stat(ytdlpCheckPath); os.IsNotExist(err) {
+			fmt.Println(color.RedString("\nFAIL: yt-dlp.exe was not found in your 'addons' folder!"))
+			fmt.Println(color.HiYellowString("Please download yt-dlp.exe and place it inside: " + filepath.Join(cwd, "addons")))
+
+			// Let them press a key so the console window doesn't instantly vanish
+			fmt.Print(color.CyanString("\nPress any key to exit..."))
+			beforeErr, _ := rawmode.Enable()
+			bufio.NewReader(os.Stdin).ReadByte()
+			rawmode.Restore(beforeErr)
+			return
+		}
+
+		tryRunYtdlpAddon(dlTargetDir, true)
+
+		fmt.Println(color.GreenString("\n処理が終了しました。(Operation complete.)"))
+
+		if !noExplorerAutoOpen {
+			explorerCmd := exec.Command(`explorer`, `/select,`, dlTargetDir)
+			explorerCmd.Run()
+		}
+		return // EARLY INTERCEPT EXIT
+	} else if tmpStart != "1" {
+		fmt.Println(color.RedString("\nFAIL: Invalid option. Valid options are: 1, 2"))
+
+		// Let them press a key so the console window doesn't instantly vanish
+		fmt.Print(color.CyanString("\nPress any key to exit..."))
+		beforeErr, _ := rawmode.Enable()
+		bufio.NewReader(os.Stdin).ReadByte()
+		rawmode.Restore(beforeErr)
+		return
+
+	}
+
+	// yes
+
+	// Normal Mode Selection Fallback
+	fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("1"))
+	fmt.Println(color.GreenString("Mode: Default (Overlay)"))
 
 	// removed forced updates lol
 
@@ -185,7 +257,6 @@ func origMain(isOptionSpecified bool) {
 
 	// it still checks for JP language pack, but this is irrelevant to an EN user, and so i removed the forced JP settings
 
-	cwd, err := os.Getwd()
 	if err != nil {
 		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 		return
@@ -201,11 +272,12 @@ func origMain(isOptionSpecified bool) {
 
 	mappingName, mapping := sonooverlay.SetOverlayDefault()
 
-	if len(mapping) != 22 {
-		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL:「default.ini」ファイルのデータに異常があります。「default.ini」ファイルを削除し、プログラムを再起動して再生成してください。\nAbnormal \"default.ini\" data. Please regenerate by deleting the \"default.ini\" file and reopen the program.\n- Mapping count: %v != 22", len(mapping))))
+	if len(mapping) != 23 {
+		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL:「default.ini」ファイルのデータに異常があります。「default.ini」ファイルを削除し、プログラムを再起動して再生成してください。\nAbnormal \"default.ini\" data. Please regenerate by deleting the \"default.ini\" file and reopen the program.\n- Mapping count: %v != 23", len(mapping))))
 		return
 	}
 
+	// what is this bro :sob:
 	var mappingFloat64 []float64
 	for _, v := range mapping {
 		v = strings.TrimRightFunc(v, func(r rune) bool {
@@ -249,6 +321,8 @@ func origMain(isOptionSpecified bool) {
 		// Judgement
 		"judge":       mappingFloat64[20] >= 1 && mappingFloat64[20] <= 10 && math.Mod(mappingFloat64[20], 1.0) == 0,
 		"judge_speed": mappingFloat64[21] >= 0,
+		// Add this line to validate text strings (always true since it's a string, not a bounding float)
+		"custom_watermark": true,
 	}
 
 	var mappingErr []string
@@ -273,48 +347,58 @@ func origMain(isOptionSpecified bool) {
 
 	var aviutlPath, aviutlProcess, aviutlName string
 
-	switch aviutlType {
-	case 1:
-		aviutlProcess = "aviutl.exe"
-		aviutlName = "AviUtl"
-		aviutlPath, _, _ = sonooverlay.DetectAviUtl()
-	case 2:
-		aviutlProcess = "aviutl2.exe"
-		aviutlName = "AviUtl ExEdit2"
-		aviutlPath, _ = filepath.Abs("C:\\ProgramData\\aviutl2")
-	default:
-		aviutlPath, aviutlProcess, aviutlName = sonooverlay.DetectAviUtl()
-		if aviutlProcess != "" {
-			fmt.Printf("Instance (auto-detected): %s\n", color.GreenString(aviutlName))
-		}
+	/*
+		This code is archived.
+		AviUtl ExEdit2 is the way to go.
 
-		if aviutlProcess == "" {
-			fmt.Print("ファイルを生成するAviUtlインスタンスを選択してください。\nChoose AviUtl instance to generate files.\n\n'1': AviUtl\n'2': AviUtl ExEdit2\n> ")
-			before, _ := rawmode.Enable()
-			tmpAviutlByte, _ := bufio.NewReader(os.Stdin).ReadByte()
-			tmpAviutl := string(tmpAviutlByte)
-			rawmode.Restore(before)
-			switch tmpAviutl {
-			default:
-				aviutlProcess = ""
-				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpAviutl))
-				fmt.Println(color.RedString("FAIL: AviUtlインスタンスが選択されていません。\nAviUtl instance not selected."))
-				return
-			case "1":
+			switch aviutlType {
+			case 1:
 				aviutlProcess = "aviutl.exe"
 				aviutlName = "AviUtl"
 				aviutlPath, _, _ = sonooverlay.DetectAviUtl()
-				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpAviutl))
-				fmt.Println(color.GreenString("Instance: AviUtl"))
-			case "2":
+			case 2:
 				aviutlProcess = "aviutl2.exe"
 				aviutlName = "AviUtl ExEdit2"
 				aviutlPath, _ = filepath.Abs("C:\\ProgramData\\aviutl2")
-				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpAviutl))
-				fmt.Println(color.GreenString("Instance: AviUtl ExEdit2"))
+			default:
+				aviutlPath, aviutlProcess, aviutlName = sonooverlay.DetectAviUtl()
+				if aviutlProcess != "" {
+					fmt.Printf("Instance (auto-detected): %s\n", color.GreenString(aviutlName))
+				}
+
+				if aviutlProcess == "" {
+					fmt.Print("ファイルを生成するAviUtlインスタンスを選択してください。\nChoose AviUtl instance to generate files.\n\n'1': AviUtl\n'2': AviUtl ExEdit2\n> ")
+					before, _ := rawmode.Enable()
+					tmpAviutlByte, _ := bufio.NewReader(os.Stdin).ReadByte()
+					tmpAviutl := string(tmpAviutlByte)
+					rawmode.Restore(before)
+					switch tmpAviutl {
+					default:
+						aviutlProcess = ""
+						fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpAviutl))
+						fmt.Println(color.RedString("FAIL: AviUtlインスタンスが選択されていません。\nAviUtl instance not selected."))
+						return
+					case "1":
+						aviutlProcess = "aviutl.exe"
+						aviutlName = "AviUtl"
+						aviutlPath, _, _ = sonooverlay.DetectAviUtl()
+						fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpAviutl))
+						fmt.Println(color.GreenString("Instance: AviUtl"))
+					case "2":
+						aviutlProcess = "aviutl2.exe"
+						aviutlName = "AviUtl ExEdit2"
+						aviutlPath, _ = filepath.Abs("C:\\ProgramData\\aviutl2")
+						fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpAviutl))
+						fmt.Println(color.GreenString("Instance: AviUtl ExEdit2"))
+					}
+				}
 			}
-		}
-	}
+	*/
+
+	aviutlProcess = "aviutl2.exe"
+	aviutlName = "AviUtl ExEdit2"
+	aviutlPath, _ = filepath.Abs("C:\\ProgramData\\aviutl2")
+	fmt.Println(color.GreenString("Instance: AviUtl ExEdit2 in C:\\ProgramData\\aviutl2 (Aviutl v1 is deprecated)"))
 
 	var successInstall = false
 	if !skipAviutlModConfig {
@@ -727,7 +811,7 @@ func origMain(isOptionSpecified bool) {
 		return
 	}
 
-	fmt.Println(color.GreenString("OK"))
+	tryRunYtdlpAddon(resultDir, false)
 
 	message := fmt.Sprintf("\n全ての処理が完了しました！READMEの規約を確認した上で、%sファイルを%sにインポートして下さい。\nExecution complete! Please import the %s file into %s after reviewing the README Terms of Use.", exoType, aviutlName, exoType, aviutlName)
 	fmt.Println(color.GreenString(message))
@@ -737,6 +821,112 @@ func origMain(isOptionSpecified bool) {
 		cmd.Run()
 
 		time.Sleep(2000 * time.Millisecond)
+	}
+}
+
+func tryRunYtdlpAddon(resultDir string, isStandalone bool) {
+	executablePath, err := os.Executable()
+	if err != nil {
+		return
+	}
+	cwd := filepath.Dir(executablePath)
+
+	ytdlpPath := filepath.Join(cwd, "addons", "yt-dlp.exe")
+
+	if _, err := os.Stat(ytdlpPath); os.IsNotExist(err) {
+		return
+	}
+
+	fmt.Println(color.HiMagentaString("\n[Addon] yt-dlp addon detected."))
+	if !isStandalone {
+		fmt.Print("オーディオ／動画ソースをダウンロードしますか？ (Do you want to download an audio/video source?) [y/n]\n> ")
+
+		before, _ := rawmode.Enable()
+		tmpChoiceByte, _ := bufio.NewReader(os.Stdin).ReadByte()
+		tmpChoice := string(tmpChoiceByte)
+		rawmode.Restore(before)
+
+		if tmpChoice != "Y" && tmpChoice != "y" {
+			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpChoice))
+			return
+		}
+		fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpChoice))
+	}
+
+	// Loop
+	for {
+		fmt.Print("\nYouTube などの動画URLを入力してください。('exit' で終了)\nEnter the media source URL (or type 'exit' to quit):\n> ")
+		var videoURL string
+		fmt.Scanln(&videoURL)
+		videoURL = strings.TrimSpace(videoURL)
+
+		// Clean exit door out of the downloader thread loop
+		if strings.ToLower(videoURL) == "exit" || videoURL == "" {
+			fmt.Println(color.HiYellowString("Exiting downloader menu."))
+			break
+		}
+
+		fmt.Print("ダウンロード形式を選択してください (Choose download format):\n'1': 楽曲音声のみ (Audio Only - mp3)\n'2': 背景動画 (Background Video - mp4)\n> ")
+		beforeMode, _ := rawmode.Enable()
+		tmpModeByte, _ := bufio.NewReader(os.Stdin).ReadByte()
+		tmpMode := string(tmpModeByte)
+		rawmode.Restore(beforeMode)
+
+		var cmd *exec.Cmd
+		if tmpMode == "2" {
+			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("Video (mp4)"))
+
+			// Dynamic naming rule definition
+			fileName := "video.%(ext)s"
+			if isStandalone {
+				// Standalone Mode: Sets name to "MV_Title_UnixTimestamp.mp4"
+				// --restrict-filenames automatically cleans up spaces/special characters for AviUtl stability
+				fileName = fmt.Sprintf("%%(title)s_%d.%%(ext)s", time.Now().Unix())
+			}
+			outputTemplate := filepath.Join(resultDir, fileName)
+
+			cmd = exec.Command(ytdlpPath,
+				"--ffmpeg-location", filepath.Join(cwd, "addons"),
+				"--restrict-filenames", // ◄ ADDED: Safely cleans up video titles for Windows/AviUtl compatibility
+				"-f", "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080][ext=mp4]",
+				"--merge-output-format", "mp4",
+				"-o", outputTemplate,
+				videoURL,
+			)
+		} else {
+			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("Audio (mp3)"))
+
+			fileName := "audio.%(ext)s"
+			if isStandalone {
+				// Standalone Mode: Sets name to "Audio_Title_UnixTimestamp.mp3"
+				fileName = fmt.Sprintf("%%(title)s_%d.%%(ext)s", time.Now().Unix())
+			}
+			outputTemplate := filepath.Join(resultDir, fileName)
+
+			cmd = exec.Command(ytdlpPath,
+				"--ffmpeg-location", filepath.Join(cwd, "addons"),
+				"--restrict-filenames", // ◄ ADDED: Safely cleans up audio titles
+				"-f", "ba/b",
+				"-x",
+				"--audio-format", "mp3",
+				"-o", outputTemplate,
+				videoURL,
+			)
+		}
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		if err := cmd.Run(); err != nil {
+			fmt.Println(color.RedString(fmt.Sprintf("FAIL: Download execution failed: %s", err.Error())))
+		} else {
+			fmt.Println(color.GreenString("OK: Media assets successfully saved to target folder!"))
+		}
+
+		// If running inside Option 1 (Normal Mode), we only want one file for the chart project, so exit after one run
+		if !isStandalone {
+			break
+		}
 	}
 }
 

@@ -174,6 +174,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
@@ -209,6 +210,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
@@ -244,6 +246,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
@@ -279,6 +282,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
@@ -352,6 +356,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
@@ -386,6 +391,7 @@ func TryInstallObject(aviutlPath string, aviutlProcess string, mappingObj []stri
 			"\n", "\r\n",
 			"{version}", Version,
 			"{font}", font,
+			"{custom_watermark}", mappingObj[22], // ◄ Changed from static text to array slot
 			// Root
 			"{offset}", mappingObj[0],
 			"{cache}", mappingObj[1],
