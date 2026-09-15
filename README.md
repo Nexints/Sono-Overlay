@@ -31,9 +31,12 @@ Sono-Overlay has these extended features compared to the originals:
 - Dynamic Stage Support
 - Sonolus Horizon Support
 - Custom Watermarks (& Moving Watermarks)
-- `yt-dlp` Integration (add `yt-dlp`, `ffmpeg`, and `ffprobe` to an addons folder!)
 - Primary [AviUtl ExEdit 2](https://mints.ne.jp) Support
 - Local File Support (*.json.gz)
+
+Sono-Overlay is integrated into this repository!
+- [SonoUtils](https://github.com/Nexints/SonoUtils/tree/main)
+It's recommended to use SonoUtils instead of Sono-Overlay, as Sono-Utils holds Sono-Overlay bundled inside of it. However, Sono-Overlay runs standalone, which makes Sono-Utils compliant under the AGPL-v3 (as these are seperate apps, and Sono-Utils only launches Sono-Overlay)
 
 Sono-Overlay has these features planned:
 - High:
