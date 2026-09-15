@@ -164,76 +164,6 @@ func origMain(isOptionSpecified bool) {
 		fmt.Println(color.RedString("This program will run, but I will not provide support for this version of Sono-Overlay.\n"))
 	}
 
-	// Select screen
-	fmt.Print("\n起動モードを選択してください (Select Startup Mode):\n'1': 通常起動 [譜面解析 + ビデオ生成] (Default (Overlay))\n'2': メディアダウンローダー単体起動 (YT Download / Experimental)\n> ")
-	beforeStart, _ := rawmode.Enable()
-	tmpStartByte, _ := bufio.NewReader(os.Stdin).ReadByte()
-	tmpStart := string(tmpStartByte)
-	rawmode.Restore(beforeStart)
-
-	if tmpStart == "2" {
-		fmt.Printf("\n\033[A\033[2K\r> %s\n", color.HiCyanString("2"))
-		fmt.Println(color.GreenString("Mode: Standalone Downloader Mode"))
-
-		dlTargetDir := filepath.Join(cwd, "dist", "downloads")
-		if flag.Arg(0) != "" {
-			dlTargetDir = filepath.Join(cwd, "dist", flag.Arg(0))
-		} else {
-			fmt.Print("保存先のフォルダ名を入力してください（空欄で「downloads」）\nEnter destination folder name (Leave blank for 'downloads'):\n> ")
-			var customFolderName string
-			fmt.Scanln(&customFolderName)
-			customFolderName = strings.TrimSpace(customFolderName)
-			if customFolderName != "" {
-				dlTargetDir = filepath.Join(cwd, "dist", customFolderName)
-			}
-		}
-
-		if err := os.MkdirAll(dlTargetDir, 0755); err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: Failed to create target directory: %s", err.Error())))
-			return
-		}
-
-		// ADDED: Friendly warning if they pick the downloader without installing files
-		ytdlpCheckPath := filepath.Join(cwd, "addons", "yt-dlp.exe")
-		if _, err := os.Stat(ytdlpCheckPath); os.IsNotExist(err) {
-			fmt.Println(color.RedString("\nFAIL: yt-dlp.exe was not found in your 'addons' folder!"))
-			fmt.Println(color.HiYellowString("Please download yt-dlp.exe and place it inside: " + filepath.Join(cwd, "addons")))
-
-			// Let them press a key so the console window doesn't instantly vanish
-			fmt.Print(color.CyanString("\nPress any key to exit..."))
-			beforeErr, _ := rawmode.Enable()
-			bufio.NewReader(os.Stdin).ReadByte()
-			rawmode.Restore(beforeErr)
-			return
-		}
-
-		tryRunYtdlpAddon(dlTargetDir, true)
-
-		fmt.Println(color.GreenString("\n処理が終了しました。(Operation complete.)"))
-
-		if !noExplorerAutoOpen {
-			explorerCmd := exec.Command(`explorer`, `/select,`, dlTargetDir)
-			explorerCmd.Run()
-		}
-		return // EARLY INTERCEPT EXIT
-	} else if tmpStart != "1" {
-		fmt.Println(color.RedString("\nFAIL: Invalid option. Valid options are: 1, 2"))
-
-		// Let them press a key so the console window doesn't instantly vanish
-		fmt.Print(color.CyanString("\nPress any key to exit..."))
-		beforeErr, _ := rawmode.Enable()
-		bufio.NewReader(os.Stdin).ReadByte()
-		rawmode.Restore(beforeErr)
-		return
-
-	}
-
-	// yes
-
-	// Normal Mode Selection Fallback
-	fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("1"))
-	fmt.Println(color.GreenString("Mode: Default (Overlay)"))
-
 	// removed forced updates lol
 
 	fmt.Printf("- 前提条件を確認中 (Checking prerequisites)... ")
@@ -433,9 +363,19 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	var chartId string
+	var isLocalJson bool // ◄ ADDED: Track if we are running in local offline mode
+
 	if flag.Arg(0) != "" {
 		chartId = flag.Arg(0)
-		fmt.Printf("譜面ID (Chart ID): %s\n", color.GreenString(chartId))
+		chartId = strings.Trim(strings.TrimSpace(chartId), "\"'") // Clean quote tags
+		if info, err := os.Stat(chartId); err == nil && !info.IsDir() {
+			isLocalJson = true
+		}
+		if isLocalJson {
+			fmt.Println(color.GreenString("Targeting Local File: " + filepath.Base(chartId)))
+		} else {
+			fmt.Printf("譜面ID (Chart ID): %s\n", color.GreenString(chartId))
+		}
 	} else {
 		var sb strings.Builder
 
@@ -449,14 +389,32 @@ func origMain(isOptionSpecified bool) {
 		sb.WriteString("\n'sync-': Local Server (ScoreSync + ScoreSync Modern)")
 		sb.WriteString("\n'coconut-next-sekai-': Next SEKAI (coconut.sonolus.com/next-sekai)")
 		sb.WriteString("\n'coconut-horizon-': Sonolus Horizon (coconut.sonolus.com/horizon) <-- Original Sonolus Rhythm Game")
-		sb.WriteString("\n* I have obtained permission to implement Sonolus Horizon into this overlay.\n")
+		sb.WriteString("\n(EXPERIMENTAL) Alternatively, drag & drop a LevelData (.json.gz) file!\n")
 		sb.WriteString("\n> ")
 
 		// Convert back to a single string when done
 		result := sb.String()
 		fmt.Print(result)
-		fmt.Scanln(&chartId)
-		fmt.Printf("\033[A\033[2K\r> %s\n", color.GreenString(chartId))
+
+		// FIXED: Use bufio Scanner to read the entire line, spaces included!
+		scanner := bufio.NewScanner(os.Stdin)
+		if scanner.Scan() {
+			chartId = scanner.Text()
+		}
+
+		// Clean up trailing/leading spaces or quotation mark artifacts appended by Windows drag-and-drop
+		chartId = strings.Trim(strings.TrimSpace(chartId), "\"'")
+
+		// Check if the input path string points to a real local file
+		if info, err := os.Stat(chartId); err == nil && !info.IsDir() {
+			isLocalJson = true
+		}
+
+		if isLocalJson {
+			fmt.Printf("\033[A\033[2K\r> Targeting Local File: %s\n", color.GreenString(filepath.Base(chartId)))
+		} else {
+			fmt.Printf("\033[A\033[2K\r> %s\n", color.GreenString(chartId))
+		}
 	}
 
 	// Instance section
@@ -471,57 +429,138 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	var chartSource sonooverlay.Source
-	if strings.HasPrefix(chartId, "sync") {
-		chartSource, err = sonooverlay.DetectLocalChartSource()
+	var chart sonolus.LevelInfo
+
+	if isLocalJson {
+		// Mock a local source profile to route correctly inside the pkg library
+		absChartPath, err := filepath.Abs(chartId)
+		if err != nil {
+			fmt.Println(color.RedString(fmt.Sprintf("FAIL: Failed to resolve absolute path: %s", err.Error())))
+			return
+		}
+		chartId = absChartPath // Update chartId with the absolute path string
+
+		// Mock a local source profile to route correctly inside the pkg library
+		chartSource = sonooverlay.Source{
+			Id:     "local_json",
+			Name:   "Local Offline JSON Chart",
+			Color:  0xeeaa00,
+			Host:   "local_disk",
+			Status: 0,
+		}
+
+		// Run your overridden internal FetchChart module
+		chart, err = sonooverlay.FetchChart(chartSource, chartId)
 		if err != nil {
 			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
-		if strings.Contains(chartId, "-") {
-			parts := strings.SplitN(chartId, "-", 2)
-			if len(parts) == 2 {
-				chartId = parts[1]
+		scanner := bufio.NewScanner(os.Stdin)
+		fmt.Println(color.HiCyanString("\n[Local Setup] Please configure your chart metadata tags:"))
+
+		fmt.Print("曲名を入力してください（空欄でファイル名を使用）\nEnter Song Title (Leave blank to use filename):\n> ")
+		if scanner.Scan() {
+			inputTitle := strings.TrimSpace(scanner.Text())
+			if inputTitle != "" {
+				chart.Title = inputTitle
 			}
-		} else {
-			fmt.Print("ローカルサーバーの譜面を入力してください。(Enter chart ID for the local server.)\n> ")
-			fmt.Scanln(&chartId)
+		}
+
+		fmt.Print("アーティスト名を入力してください (Enter Music Artist / Composer):\n> ")
+		if scanner.Scan() {
+			inputArtist := strings.TrimSpace(scanner.Text())
+			if inputArtist != "" {
+				chart.Artists = inputArtist
+			} else {
+				chart.Artists = "Unknown Artist"
+			}
+		}
+
+		fmt.Print("譜面制作者名を入力してください (Enter Chart Author / Charter):\n> ")
+		if scanner.Scan() {
+			inputAuthor := strings.TrimSpace(scanner.Text())
+			if inputAuthor != "" {
+				chart.Author = inputAuthor
+			} else {
+				chart.Author = "Unknown Charter"
+			}
+		}
+
+		fmt.Print("譜面の難易度（数字）を入力してください (Enter Chart Difficulty Level Number):\n> ")
+		if scanner.Scan() {
+			inputRating := strings.TrimSpace(scanner.Text())
+			if val, err := strconv.Atoi(inputRating); err == nil {
+				chart.Rating = val
+			} else {
+				chart.Rating = 26
+			}
+		}
+
+		fmt.Print("\n背景画像の設定を選択してください (Select Background Option):\n'1': ジャケットからプロセカ風背景を自動生成 (Generate Project Sekai background from cover)\n'2': カスタム画像を自分で指定 (Import your own custom image file)\n'3': 設定なし (Skip / Keep transparent or default)\n> ")
+		if scanner.Scan() {
+			bgChoice := strings.TrimSpace(scanner.Text())
+			if bgChoice == "1" {
+				customBG = false // Triggers local generator pipeline down below
+			} else if bgChoice == "2" {
+				customBG = true // Switches pipeline path to flag custom image loading loops
+			} else {
+				chartSource.Id = "local_json_no_bg" // Set custom identity to skip all backgrounds entirely
+			}
 		}
 	} else {
-		chartSource, err = sonooverlay.DetectChartSource(chartId, chartInstance)
+		// Classic Web Domain Source Mapping Loop
+		if strings.HasPrefix(chartId, "sync") {
+			chartSource, err = sonooverlay.DetectLocalChartSource()
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+			if strings.Contains(chartId, "-") {
+				parts := strings.SplitN(chartId, "-", 2)
+				if len(parts) == 2 {
+					chartId = parts[1]
+				}
+			} else {
+				fmt.Print("ローカルサーバーの譜面を入力してください。(Enter chart ID for the local server.)\n> ")
+				fmt.Scanln(&chartId)
+			}
+		} else {
+			chartSource, err = sonooverlay.DetectChartSource(chartId, chartInstance)
+			if err != nil {
+				fmt.Println(color.RedString("FAIL: 譜面が見つかりません。接頭辞も込め、正しい譜面IDを入力して下さい。\nChart not found. Please enter the correct chart ID including the prefix."))
+				return
+			}
+			if chartSource.Status == 1 {
+				fmt.Printf(color.RedString("FAIL: %sは対応されなくなりました。ご利用ありがとうございました。\n%s is no longer supported. Thank you for using the service.\n"), chartSource.Name, chartSource.Name)
+				return
+			}
+			if chartSource.Status == 2 {
+				fmt.Printf(color.HiYellowString("WARN: %sは現在開発中であり、正常に動作しない可能性があります。\n%s is currently in development and may not work.\n"), chartSource.Name, chartSource.Name)
+			}
+		}
+
+		fmt.Printf("- 譜面を取得中 (Getting chart): %s%s%s ", RgbColorEscape(chartSource.Color), chartSource.Name, ResetEscape())
+
+		prefixTrim := checkSubstrings([]string{chartId}, "lalo-", "skyra-")
+		chart, err = sonooverlay.FetchChart(chartSource, strings.TrimPrefix(chartId, prefixTrim))
 		if err != nil {
-			fmt.Println(color.RedString("FAIL: 譜面が見つかりません。接頭辞も込め、正しい譜面IDを入力して下さい。\nChart not found. Please enter the correct chart ID including the prefix."))
+			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
 			return
 		}
-		if chartSource.Status == 1 {
-			fmt.Printf(color.RedString("FAIL: %sは対応されなくなりました。ご利用ありがとうございました。\n%s is no longer supported. Thank you for using the service.\n"), chartSource.Name, chartSource.Name)
-			return
-		}
-		if chartSource.Status == 2 {
-			fmt.Printf(color.HiYellowString("WARN: %sは現在開発中であり、正常に動作しない可能性があります。\n%s is currently in development and may not work.\n"), chartSource.Name, chartSource.Name)
-		}
-	}
-
-	fmt.Printf("- 譜面を取得中 (Getting chart): %s%s%s ", RgbColorEscape(chartSource.Color), chartSource.Name, ResetEscape())
-
-	var chart sonolus.LevelInfo
-	prefixTrim := checkSubstrings([]string{chartId}, "lalo-", "skyra-")
-	chart, err = sonooverlay.FetchChart(chartSource, strings.TrimPrefix(chartId, prefixTrim))
-
-	if err != nil {
-		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-		return
 	}
 
 	// Additional BG
-	chartCCv1, _ := sonooverlay.FetchChart(chartSource, chartId+"?c_background=v1")
-	chartUNv3, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v3")
-	chartUNv1, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v1")
-	chartUNv1def, _ := sonooverlay.FetchChart(chartSource, chartId+"?levelbg=default_or_v1")
+	var chartCCv1, chartUNv3, chartUNv1, chartUNv1def sonolus.LevelInfo
+	if !isLocalJson {
+		chartCCv1, _ = sonooverlay.FetchChart(chartSource, chartId+"?c_background=v1")
+		chartUNv3, _ = sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v3")
+		chartUNv1, _ = sonooverlay.FetchChart(chartSource, chartId+"?levelbg=v1")
+		chartUNv1def, _ = sonooverlay.FetchChart(chartSource, chartId+"?levelbg=default_or_v1")
 
-	// I will update this when it breaks.
-	if chart.Engine.Version != 13 {
-		fmt.Println(color.RedString(fmt.Sprintf("\nFAIL (ver.%d): エンジンのバージョンが古い。Sono-Overlayを最新版に更新してください。\nUnsupported engine version. Please update Sono-Overlay to latest version.", chart.Engine.Version)))
-		return
+		if chart.Engine.Version != 13 {
+			fmt.Println(color.RedString(fmt.Sprintf("\nFAIL (ver.%d): エンジンのバージョンが古い。Sono-Overlayを最新版に更新してください。\nUnsupported engine version. Please update Sono-Overlay to latest version.", chart.Engine.Version)))
+			return
+		}
 	}
 
 	banList, err := BanList(chart.Author)
@@ -549,19 +588,163 @@ func origMain(isOptionSpecified bool) {
 	}
 
 	formattedOutDir := filepath.Join(cwd, strings.ReplaceAll(outDir, "_chartId_", chartId))
-	resultDir := filepath.Dir(formattedOutDir) + "\\" + chartId
+	if strings.HasPrefix(chartSource.Id, "local_json") {
+		cleanBaseName := strings.TrimSuffix(filepath.Base(chartId), filepath.Ext(chartId))
+		formattedOutDir = filepath.Join(cwd, strings.ReplaceAll(outDir, "_chartId_", cleanBaseName))
+	}
+	resultDir := filepath.Dir(formattedOutDir) + "\\" + filepath.Base(formattedOutDir)
 
 	fmt.Println(color.GreenString("OK"))
 	fmt.Printf("- 出力先ディレクトリ (Output path): %s\n", color.CyanString(resultDir))
 
-	fmt.Print("- ジャケットをダウンロード中 (Downloading jacket)... ")
-	err = sonooverlay.DownloadJacket(chartSource, chart, formattedOutDir)
-	if err != nil {
-		fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-		return
-	}
+	if isLocalJson {
+		os.MkdirAll(formattedOutDir, 0755)
+		fmt.Println(color.HiYellowString("[Notice] Local offline mode active: Skipping remote download pipelines."))
 
-	fmt.Println(color.GreenString("OK"))
+		scanner := bufio.NewScanner(os.Stdin)
+
+		if chartSource.Id == "local_json_no_bg" {
+			fmt.Println(color.HiYellowString("Background generation skipped."))
+		} else if customBG {
+			fmt.Print("\nカスタム背景画像 (.png / .jpg) をここにドラッグ＆ドロップしてください:\nDrag & drop your custom background image file here:\n> ")
+			if scanner.Scan() {
+				bgPath := strings.Trim(strings.TrimSpace(scanner.Text()), "\"'")
+				if bgPath != "" {
+					if info, err := os.Stat(bgPath); err == nil && !info.IsDir() {
+						fmt.Print("- 背景画像を処理中 (Processing custom background)... ")
+						err = sonooverlay.CopyFile(bgPath, filepath.Join(formattedOutDir, "background.png"))
+						if err != nil {
+							fmt.Println(color.RedString(fmt.Sprintf("WARN: Background import failed: %s", err.Error())))
+						} else {
+							_ = sonooverlay.CopyFile(bgPath, filepath.Join(formattedOutDir, "background-v1.png"))
+							fmt.Println(color.GreenString("OK"))
+						}
+					} else {
+						fmt.Println(color.HiYellowString("Image file not found. Running with default blank assets instead."))
+					}
+				}
+			}
+		} else {
+			fmt.Print("\nプロセカ風背景の生成に使用するジャケット画像 (.png / .jpg) をドラッグ＆ドロップしてください:\nDrag & drop a jacket image here to generate the Project Sekai background:\n> ")
+			if scanner.Scan() {
+				coverSrcPath := strings.Trim(strings.TrimSpace(scanner.Text()), "\"'")
+				if coverSrcPath != "" {
+					if info, err := os.Stat(coverSrcPath); err == nil && !info.IsDir() {
+						_ = sonooverlay.CopyFile(coverSrcPath, filepath.Join(formattedOutDir, "cover.png"))
+
+						fmt.Print("- プロセカ風背景を生成中 - お待ちください (Generating background locally - please wait)... ")
+
+						err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 1", customBG)
+						if err != nil {
+							fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: %s", err.Error())))
+							return
+						}
+
+						err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 3", customBG)
+						if err != nil {
+							fmt.Println(color.RedString(fmt.Sprintf("\nFAIL: %s", err.Error())))
+							return
+						}
+						fmt.Println(color.GreenString("OK"))
+					} else {
+						fmt.Println(color.RedString("FAIL: Jacket file not found. Skipping automatic background generation."))
+					}
+				}
+			}
+		}
+	} else {
+		// Encapsulate the entire classic web asset download loop inside this clean else block
+		fmt.Print("- ジャケットをダウンロード中 (Downloading jacket)... ")
+		err = sonooverlay.DownloadJacket(chartSource, chart, formattedOutDir)
+		if err != nil {
+			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+			return
+		}
+		fmt.Println(color.GreenString("OK"))
+
+		if !isOptionSpecified && (chartSource.Id == "untitledcharts" || chartSource.Id == "skyra") {
+			fmt.Print("\nカスタム背景を使用しますか？（デフォルトを使用するには「n」）[y/n]\nUse custom background? ('n' to use default) [y/n]\n> ")
+			before, _ := rawmode.Enable()
+			tmpCustomBGByte, _ := bufio.NewReader(os.Stdin).ReadByte()
+			tmpCustomBG := string(tmpCustomBGByte)
+			rawmode.Restore(before)
+			if tmpCustomBG == "Y" || tmpCustomBG == "y" {
+				customBG = true
+				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpCustomBG))
+				fmt.Println(color.GreenString("TOGGLE: ON"))
+			} else {
+				customBG = false
+				fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpCustomBG))
+				fmt.Println(color.RedString("TOGGLE: OFF"))
+			}
+		}
+
+		if customBG {
+			fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
+
+			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+
+			if chartSource.Id == "untitledcharts" {
+				err = sonooverlay.DownloadBackground(chartSource, chartUNv1def, formattedOutDir, chartId+"?levelbg=default_or_v1", "", customBG)
+				if err != nil {
+					fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+					return
+				}
+			} else {
+				err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId+"/", "", customBG)
+				if err != nil {
+					fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+					return
+				}
+			}
+		} else if chartSource.Id == "untitledcharts" {
+			fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
+
+			err = sonooverlay.DownloadBackground(chartSource, chartUNv3, formattedOutDir, chartId+"?levelbg=v3", "", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+
+			err = sonooverlay.DownloadBackground(chartSource, chartUNv1, formattedOutDir, chartId+"?levelbg=v1", "", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+		} else if chartSource.Id == "chart_cyanvas" && chartSource.Name != "Chart Cyanvas Archive" {
+			fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
+
+			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+
+			err = sonooverlay.DownloadBackground(chartSource, chartCCv1, formattedOutDir, chartId+"?c_background=v1", "", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+		} else {
+			fmt.Print("- ローカルで背景を生成中 - お待ちください (Generating background locally - please wait)... ")
+
+			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 1", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+
+			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 3", customBG)
+			if err != nil {
+				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
+				return
+			}
+		}
+	}
 
 	// fmt.Print("- 音声のプレビューをダウンロード中 (Downloading preview audio)... ")
 	// err = sonooverlay.DownloadPreview(chartSource, chart, formattedOutDir)
@@ -572,92 +755,8 @@ func origMain(isOptionSpecified bool) {
 
 	// fmt.Println(color.GreenString("OK"))
 
-	if !isOptionSpecified && (chartSource.Id == "untitledcharts" || chartSource.Id == "skyra") {
-		fmt.Print("\nカスタム背景を使用しますか？（デフォルトを使用するには「n」）[y/n]\nUse custom background? ('n' to use default) [y/n]\n> ")
-		before, _ := rawmode.Enable()
-		tmpCustomBGByte, _ := bufio.NewReader(os.Stdin).ReadByte()
-		tmpCustomBG := string(tmpCustomBGByte)
-		rawmode.Restore(before)
-		if tmpCustomBG == "Y" || tmpCustomBG == "y" {
-			customBG = true
-			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpCustomBG))
-			fmt.Println(color.GreenString("TOGGLE: ON"))
-		} else {
-			customBG = false
-			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpCustomBG))
-			fmt.Println(color.RedString("TOGGLE: OFF"))
-		}
-	}
-
-	if customBG {
-		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
-
-		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-
-		if chartSource.Id == "untitledcharts" {
-			err = sonooverlay.DownloadBackground(chartSource, chartUNv1def, formattedOutDir, chartId+"?levelbg=default_or_v1", "", customBG)
-			if err != nil {
-				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-				return
-			}
-		} else {
-			err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId+"/", "", customBG)
-			if err != nil {
-				fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-				return
-			}
-		}
-	} else if chartSource.Id == "untitledcharts" {
-		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
-
-		err = sonooverlay.DownloadBackground(chartSource, chartUNv3, formattedOutDir, chartId+"?levelbg=v3", "", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-
-		err = sonooverlay.DownloadBackground(chartSource, chartUNv1, formattedOutDir, chartId+"?levelbg=v1", "", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-	} else if chartSource.Id == "chart_cyanvas" && chartSource.Name != "Chart Cyanvas Archive" {
-		fmt.Print("- 背景をダウンロード中 (Downloading background)... ")
-
-		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-
-		err = sonooverlay.DownloadBackground(chartSource, chartCCv1, formattedOutDir, chartId+"?c_background=v1", "", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-	} else {
-		fmt.Print("- ローカルで背景を生成中 - お待ちください (Generating background locally - please wait)... ")
-
-		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 1", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-
-		err = sonooverlay.DownloadBackground(chartSource, chart, formattedOutDir, chartId, "-v 3", customBG)
-		if err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: %s", err.Error())))
-			return
-		}
-	}
-
-	fmt.Println(color.GreenString("OK"))
-
 	fmt.Print("- 譜面を解析中 (Analyzing chart)... ")
+
 	levelData, err := sonooverlay.FetchLevelData(chartSource, chart)
 
 	if err != nil {
@@ -784,18 +883,21 @@ func origMain(isOptionSpecified bool) {
 		charter = charterTag
 	}
 
+	isEnglishTarget := enUI || (len(mappingStr) > 2 && mappingStr[2] == "1")
+
 	description := []string{fmt.Sprintf("作詞：-    作曲：%s    編曲：-", composerAndVocals[0]), fmt.Sprintf("Vo：%s    譜面制作：%s", composerAndVocals[1], charter[0])}
 	descriptionv1 := []string{fmt.Sprintf("作詞：-    作曲：%s    編曲：-", composerAndVocals[0]), fmt.Sprintf("歌：%s    譜面制作：%s", composerAndVocals[1], charter[0])}
 	extra := "【追加情報】"
 	exFile := "tournament-mode.png"
 	exFileOpacity := "100.0"
 
-	if enUI {
+	if isEnglishTarget {
 		description = []string{fmt.Sprintf("Lyrics: -    Music: %s    Arrangement: -", composerAndVocals[0]), fmt.Sprintf("Vo: %s    Chart Design: %s", composerAndVocals[1], charter[0])}
 		descriptionv1 = []string{fmt.Sprintf("Lyrics: -    Music: %s    Arrangement: -", composerAndVocals[0]), fmt.Sprintf("Vocals: %s    Chart Design: %s", composerAndVocals[1], charter[0])}
 		extra = "【Additional Info】"
 		exFile = "tournament-mode-en.png"
 	}
+
 	if scoreMode == "tournament" {
 		exFileOpacity = "0.0"
 	}
@@ -811,8 +913,6 @@ func origMain(isOptionSpecified bool) {
 		return
 	}
 
-	tryRunYtdlpAddon(resultDir, false)
-
 	message := fmt.Sprintf("\n全ての処理が完了しました！READMEの規約を確認した上で、%sファイルを%sにインポートして下さい。\nExecution complete! Please import the %s file into %s after reviewing the README Terms of Use.", exoType, aviutlName, exoType, aviutlName)
 	fmt.Println(color.GreenString(message))
 
@@ -821,112 +921,6 @@ func origMain(isOptionSpecified bool) {
 		cmd.Run()
 
 		time.Sleep(2000 * time.Millisecond)
-	}
-}
-
-func tryRunYtdlpAddon(resultDir string, isStandalone bool) {
-	executablePath, err := os.Executable()
-	if err != nil {
-		return
-	}
-	cwd := filepath.Dir(executablePath)
-
-	ytdlpPath := filepath.Join(cwd, "addons", "yt-dlp.exe")
-
-	if _, err := os.Stat(ytdlpPath); os.IsNotExist(err) {
-		return
-	}
-
-	fmt.Println(color.HiMagentaString("\n[Addon] yt-dlp addon detected."))
-	if !isStandalone {
-		fmt.Print("オーディオ／動画ソースをダウンロードしますか？ (Do you want to download an audio/video source?) [y/n]\n> ")
-
-		before, _ := rawmode.Enable()
-		tmpChoiceByte, _ := bufio.NewReader(os.Stdin).ReadByte()
-		tmpChoice := string(tmpChoiceByte)
-		rawmode.Restore(before)
-
-		if tmpChoice != "Y" && tmpChoice != "y" {
-			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.RedString(tmpChoice))
-			return
-		}
-		fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString(tmpChoice))
-	}
-
-	// Loop
-	for {
-		fmt.Print("\nYouTube などの動画URLを入力してください。('exit' で終了)\nEnter the media source URL (or type 'exit' to quit):\n> ")
-		var videoURL string
-		fmt.Scanln(&videoURL)
-		videoURL = strings.TrimSpace(videoURL)
-
-		// Clean exit door out of the downloader thread loop
-		if strings.ToLower(videoURL) == "exit" || videoURL == "" {
-			fmt.Println(color.HiYellowString("Exiting downloader menu."))
-			break
-		}
-
-		fmt.Print("ダウンロード形式を選択してください (Choose download format):\n'1': 楽曲音声のみ (Audio Only - mp3)\n'2': 背景動画 (Background Video - mp4)\n> ")
-		beforeMode, _ := rawmode.Enable()
-		tmpModeByte, _ := bufio.NewReader(os.Stdin).ReadByte()
-		tmpMode := string(tmpModeByte)
-		rawmode.Restore(beforeMode)
-
-		var cmd *exec.Cmd
-		if tmpMode == "2" {
-			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("Video (mp4)"))
-
-			// Dynamic naming rule definition
-			fileName := "video.%(ext)s"
-			if isStandalone {
-				// Standalone Mode: Sets name to "MV_Title_UnixTimestamp.mp4"
-				// --restrict-filenames automatically cleans up spaces/special characters for AviUtl stability
-				fileName = fmt.Sprintf("%%(title)s_%d.%%(ext)s", time.Now().Unix())
-			}
-			outputTemplate := filepath.Join(resultDir, fileName)
-
-			cmd = exec.Command(ytdlpPath,
-				"--ffmpeg-location", filepath.Join(cwd, "addons"),
-				"--restrict-filenames", // ◄ ADDED: Safely cleans up video titles for Windows/AviUtl compatibility
-				"-f", "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080][ext=mp4]",
-				"--merge-output-format", "mp4",
-				"-o", outputTemplate,
-				videoURL,
-			)
-		} else {
-			fmt.Printf("\n\033[A\033[2K\r> %s\n", color.GreenString("Audio (mp3)"))
-
-			fileName := "audio.%(ext)s"
-			if isStandalone {
-				// Standalone Mode: Sets name to "Audio_Title_UnixTimestamp.mp3"
-				fileName = fmt.Sprintf("%%(title)s_%d.%%(ext)s", time.Now().Unix())
-			}
-			outputTemplate := filepath.Join(resultDir, fileName)
-
-			cmd = exec.Command(ytdlpPath,
-				"--ffmpeg-location", filepath.Join(cwd, "addons"),
-				"--restrict-filenames", // ◄ ADDED: Safely cleans up audio titles
-				"-f", "ba/b",
-				"-x",
-				"--audio-format", "mp3",
-				"-o", outputTemplate,
-				videoURL,
-			)
-		}
-
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		if err := cmd.Run(); err != nil {
-			fmt.Println(color.RedString(fmt.Sprintf("FAIL: Download execution failed: %s", err.Error())))
-		} else {
-			fmt.Println(color.GreenString("OK: Media assets successfully saved to target folder!"))
-		}
-
-		// If running inside Option 1 (Normal Mode), we only want one file for the chart project, so exit after one run
-		if !isStandalone {
-			break
-		}
 	}
 }
 

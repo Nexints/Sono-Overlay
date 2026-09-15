@@ -24,6 +24,7 @@ Sono-Overlay currently supports the following servers:
   - ScoreSync (sync-)
 - Official Game Servers:
   - Sonolus Horizon (coconut-horizon-) / NEW Expansion (BETA)
+- Local File Support (*.json.gz)
 - More coming!
 
 Sono-Overlay has these extended features compared to the originals:
@@ -32,10 +33,12 @@ Sono-Overlay has these extended features compared to the originals:
 - Custom Watermarks (& Moving Watermarks)
 - `yt-dlp` Integration (add `yt-dlp`, `ffmpeg`, and `ffprobe` to an addons folder!)
 - Primary [AviUtl ExEdit 2](https://mints.ne.jp) Support
+- Local File Support (*.json.gz)
 
 Sono-Overlay has these features planned:
 - High:
   - Custom ID (for a custom server)
+  - Bundled Local Server
 - Low:
   - Skill Cards
   - More Addons

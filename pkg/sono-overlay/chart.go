@@ -55,6 +55,29 @@ func DetectLocalChartSource() (Source, error) {
 
 func FetchChart(source Source, chartId string) (sonolus.LevelInfo, error) {
 	var url string
+
+	if strings.HasPrefix(source.Id, "local_json") {
+		var mockInfo sonolus.LevelInfo
+
+		// Clean up the text string for AviUtl rendering
+		cleanName := filepath.Base(chartId)
+		cleanName = strings.TrimSuffix(cleanName, filepath.Ext(cleanName)) // Strips .gz
+		cleanName = strings.TrimSuffix(cleanName, filepath.Ext(cleanName)) // Strips .json
+
+		// FIXED: Title gets the clean user-facing name for on-screen text loops
+		mockInfo.Title = cleanName
+
+		// FIXED: Pass the true, unaltered absolute file path here secretly for the file reader
+		mockInfo.Data.Url = chartId
+
+		mockInfo.Artists = "Local Offline Source"
+		mockInfo.Author = "Self Scripted"
+		mockInfo.Rating = 26
+		mockInfo.Engine.Version = 13
+
+		return mockInfo, nil
+	}
+
 	if source.Id == "local_server" {
 		// ローカルサーバーの場合はchartIdをタイトルとして使用
 		url = "http://" + source.Host + "/sonolus/levels/" + chartId
@@ -96,6 +119,17 @@ func FetchChart(source Source, chartId string) (sonolus.LevelInfo, error) {
 // 2: Server is in beta. You have been warned.
 func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 	var source Source
+
+	if info, err := os.Stat(chartId); err == nil && !info.IsDir() {
+		return Source{
+			Id:     "local_json",
+			Name:   "Local Offline JSON Chart",
+			Color:  0xeeaa00,
+			Host:   "local_disk",
+			Status: 0,
+		}, nil
+	}
+
 	if strings.HasPrefix(chartId, "sekai-best-") {
 		source = Source{
 			Id:     "sekai_best",
@@ -214,6 +248,38 @@ func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 func FetchLevelData(source Source, level sonolus.LevelInfo) (sonolus.LevelData, error) {
 	var url string
 	var err error
+
+	if strings.HasPrefix(source.Id, "local_json") {
+		// Open the absolute path seamlessly
+		file, err := os.Open(level.Data.Url)
+		if err != nil {
+			return sonolus.LevelData{}, fmt.Errorf("failed to read local chart payload: %w", err)
+		}
+		defer file.Close()
+
+		var data sonolus.LevelData
+
+		// Check for compression suffix using our secure absolute path reference string
+		if strings.HasSuffix(strings.ToLower(level.Data.Url), ".gz") {
+			gzipReader, err := gzip.NewReader(file)
+			if err != nil {
+				return sonolus.LevelData{}, fmt.Errorf("failed to initialize local gzip reader: %w", err)
+			}
+			defer gzipReader.Close()
+
+			err = json.NewDecoder(gzipReader).Decode(&data)
+			if err != nil {
+				return sonolus.LevelData{}, fmt.Errorf("failed to parse local compressed JSON elements: %w", err)
+			}
+		} else {
+			err = json.NewDecoder(file).Decode(&data)
+			if err != nil {
+				return sonolus.LevelData{}, fmt.Errorf("failed to parse local JSON schema elements: %w", err)
+			}
+		}
+
+		return data, nil
+	}
 
 	if source.Id == "local_server" {
 		url, err = sonolus.JoinUrl("http://"+source.Host, level.Data.Url)
@@ -377,7 +443,7 @@ func CopyFile(src, dst string) error {
 }
 
 func DownloadBackground(source Source, level sonolus.LevelInfo, destPath string, chartId string, arg string, customBG bool) error {
-	if source.Id == "sekai_best" || source.Id == "sbuga" || source.Name == "Chart Cyanvas Archive" || source.Id == "potato_leaves" || source.Id == "local_server" || source.Id == "next_sekai" || source.Id == "horizon" || (source.Id == "skyra" && !customBG) {
+	if source.Id == "local_json" || source.Id == "sekai_best" || source.Id == "sbuga" || source.Name == "Chart Cyanvas Archive" || source.Id == "potato_leaves" || source.Id == "local_server" || source.Id == "next_sekai" || source.Id == "horizon" || (source.Id == "skyra" && !customBG) {
 		coverPath := path.Join(destPath, "cover.png")
 		if _, err := os.Stat(coverPath); os.IsNotExist(err) {
 			return fmt.Errorf("ジャケット画像が見つかりません。先にジャケット画像をダウンロードしてください。(Jacket image not found. Download jacket image first.)")

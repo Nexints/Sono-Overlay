@@ -408,6 +408,39 @@ func WriteAliasFiles(assets string, destDir string, title string, description []
 		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, mappingv1[i-1], mappingv1[i])
 	}
 
+	if textLang == "English" {
+		// Main Layout Profile Track Name Swaps
+		baseAlias = strings.ReplaceAll(baseAlias, "設定@sono-overlay-2", "Settings@sono-overlay-2")
+		baseAlias = strings.ReplaceAll(baseAlias, "ライフ@sono-overlay-2", "Life@sono-overlay-2")
+		baseAlias = strings.ReplaceAll(baseAlias, "スコア@sono-overlay-2", "Score@sono-overlay-2")
+		baseAlias = strings.ReplaceAll(baseAlias, "コンボ@sono-overlay-2", "Combo@sono-overlay-2")
+		baseAlias = strings.ReplaceAll(baseAlias, "判定@sono-overlay-2", "Judgement@sono-overlay-2")
+		baseAlias = strings.ReplaceAll(baseAlias, "オート@sono-overlay-2", "Auto@sono-overlay-2")
+
+		// 4:3 Aspect Ratio Layout Track Name Swaps
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "設定@sono-overlay-2", "Settings@sono-overlay-2")
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "ライフ@sono-overlay-2", "Life@sono-overlay-2")
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "スコア@sono-overlay-2", "Score@sono-overlay-2")
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "コンボ@sono-overlay-2", "Combo@sono-overlay-2")
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "判定@sono-overlay-2", "Judgement@sono-overlay-2")
+		baseAlias43 = strings.ReplaceAll(baseAlias43, "オート@sono-overlay-2", "Auto@sono-overlay-2")
+
+		// Classic v1-Skin Layout Profile Track Name Swaps
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "設定@sono-overlay-2", "Settings@sono-overlay-2")
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "ライフ@sono-overlay-2", "Life@sono-overlay-2")
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "スコア@sono-overlay-2", "Score@sono-overlay-2")
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "コンボ@sono-overlay-2", "Combo@sono-overlay-2")
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "判定@sono-overlay-2", "Judgement@sono-overlay-2")
+		baseAliasv1 = strings.ReplaceAll(baseAliasv1, "オート@sono-overlay-2", "Auto@sono-overlay-2")
+
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "設定@sono-overlay-2", "Settings@sono-overlay-2")
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "ライフ@sono-overlay-2", "Life@sono-overlay-2")
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "スコア@sono-overlay-2", "Score@sono-overlay-2")
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "コンボ@sono-overlay-2", "Combo@sono-overlay-2")
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "判定@sono-overlay-2", "Judgement@sono-overlay-2")
+		baseAlias43v1 = strings.ReplaceAll(baseAlias43v1, "オート@sono-overlay-2", "Auto@sono-overlay-2")
+	}
+
 	if err := os.WriteFile(filepath.Join(destDir, "main2_16-9_1920x1080.object"),
 		[]byte(baseAlias),
 		0644); err != nil {
