@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unsafe"
 
 	sonooverlay "github.com/Nexints/Sono-Overlay/pkg/sono-overlay"
 	"github.com/Nexints/Sono-Overlay/pkg/sonolus"
@@ -109,6 +110,48 @@ func isASCII(s string) bool {
 
 func origMain(isOptionSpecified bool) {
 	Title()
+
+	// 1. Set up a native Windows Job Object to group child windows together
+	job, err := windows.CreateJobObject(nil, nil)
+	if err == nil {
+		// Configure the Job Object to automatically force-kill all children when the handle closes
+		info := windows.JOBOBJECT_EXTENDED_LIMIT_INFORMATION{
+			BasicLimitInformation: windows.JOBOBJECT_BASIC_LIMIT_INFORMATION{
+				LimitFlags: windows.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
+			},
+		}
+		_, _ = windows.SetInformationJobObject(
+			job,
+			windows.JobObjectExtendedLimitInformation,
+			uintptr(unsafe.Pointer(&info)),
+			uint32(unsafe.Sizeof(info)),
+		)
+		// Ensure the entire job container is destroyed when origMain exits
+		defer windows.CloseHandle(job)
+	}
+
+	// 2. Execute the start command to open your pop-up window
+	serverCmd := exec.Command("cmd", "/C", "start", "Sono-Server Launcher", "node", "../server/index.js")
+
+	// Crucial: Use CREATE_BREAKAWAY_FROM_JOB so 'start' can spawn its new window hierarchy cleanly
+	serverCmd.SysProcAttr = &windows.SysProcAttr{
+		CreationFlags: windows.CREATE_BREAKAWAY_FROM_JOB,
+	}
+
+	if err := serverCmd.Start(); err != nil {
+		fmt.Println(color.RedString("\nFAIL: Could not auto-boot Sono-Server: %s", err.Error()))
+	} else {
+		fmt.Println(color.GreenString("\n[Process Manager] Success: Opened terminal window running Sono-Server."))
+
+		// 3. FIX: Change .Id to .Pid so Go can correctly pull the Process ID integer
+		if job != 0 {
+			handle, err := windows.OpenProcess(windows.PROCESS_SET_QUOTA|windows.PROCESS_TERMINATE, false, uint32(serverCmd.Process.Pid))
+			if err == nil {
+				_ = windows.AssignProcessToJobObject(job, handle)
+				defer windows.CloseHandle(handle) // Close the temporary process handle safely
+			}
+		}
+	}
 
 	var aviutlType int
 	flag.IntVar(&aviutlType, "aviutl-type", 0, "AviUtlインスタンスを指定します。(Specify AviUtl instance.)\n'1': AviUtl\n'2': AviUtl ExEdit2")
@@ -387,6 +430,7 @@ func origMain(isOptionSpecified bool) {
 		sb.WriteString("\n'ptlv-': Potato Leaves (ptlv.milkbun.org)")
 		sb.WriteString("\n'UnCh-': UntitledCharts (untitledcharts.com)")
 		sb.WriteString("\n'sync-': Local Server (ScoreSync + ScoreSync Modern)")
+		sb.WriteString("\n'local-': Local Server (Sono-Utils) - Append the \"local-\" tag to the existing chart ID")
 		sb.WriteString("\n'coconut-next-sekai-': Next SEKAI (coconut.sonolus.com/next-sekai)")
 		sb.WriteString("\n'coconut-horizon-': Sonolus Horizon (coconut.sonolus.com/horizon) <-- Original Sonolus Rhythm Game")
 		sb.WriteString("\n(EXPERIMENTAL) Alternatively, drag & drop a LevelData (.json.gz) file!\n")
@@ -526,6 +570,7 @@ func origMain(isOptionSpecified bool) {
 			}
 		} else {
 			chartSource, err = sonooverlay.DetectChartSource(chartId, chartInstance)
+			chartId = strings.TrimPrefix(chartId, "local-")
 			if err != nil {
 				fmt.Println(color.RedString("FAIL: 譜面が見つかりません。接頭辞も込め、正しい譜面IDを入力して下さい。\nChart not found. Please enter the correct chart ID including the prefix."))
 				return

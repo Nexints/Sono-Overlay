@@ -205,6 +205,14 @@ func DetectChartSource(chartId string, chartInstance string) (Source, error) {
 			Host:   "sonolus.sbuga.com",
 			Status: 0,
 		}
+	} else if strings.HasPrefix(chartId, "local-") {
+		source = Source{
+			Id:     "local_server",
+			Name:   "Sono-Server",
+			Color:  0xccd1df,
+			Host:   "localhost:39039",
+			Status: 2,
+		}
 	} else if strings.HasPrefix(chartId, "coconut-next-sekai-") {
 		source = Source{
 			Id:     "next_sekai",

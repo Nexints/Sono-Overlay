@@ -1,8 +1,6 @@
 module github.com/Nexints/Sono-Overlay
 
-go 1.23.0
-
-toolchain go1.23.3
+go 1.26.0
 
 replace github.com/Nexints/Sono-Overlay => ./
 
@@ -35,5 +33,5 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/srinathh/gokilo v0.0.0-20200224143053-07425ce1c9d2
 	golang.org/x/image v0.28.0
-	golang.org/x/sys v0.33.0
+	golang.org/x/sys v0.48.0
 )
