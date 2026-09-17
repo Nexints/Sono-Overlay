@@ -35,7 +35,7 @@ Sono-Overlay has these extended features compared to the originals:
 - Local File Support (*.json.gz)
 
 Sono-Overlay is integrated into this repository!
-- [SonoUtils](https://github.com/Nexints/SonoUtils/tree/main)
+- [Sono-Utils](https://github.com/Sono-Suite/Sono-Utils/tree/main)
 It's recommended to use SonoUtils instead of Sono-Overlay, as Sono-Utils holds Sono-Overlay bundled inside of it. However, Sono-Overlay runs standalone, which makes Sono-Utils compliant under the AGPL-v3 (as these are seperate apps, and Sono-Utils only launches Sono-Overlay)
 
 Sono-Overlay has these features planned:
@@ -107,7 +107,7 @@ Sono-Overlay:
 - Made by Nexint (https://nexint.ca/)
 - Forked from TootieJin (https://tootiejin.com) and Nanashi (https://sevenc7c.com/)
 - Assets / Skins by Nexint (https://nexint.ca/)
-- https://github.com/Nexints/Sono-Overlay
+- https://github.com/Sono-Suite/Sono-Overlay
 ```
 
 2. This tool **should not be used for malicious purposes** (such as, but not limited to: spreading misinformation on social media).

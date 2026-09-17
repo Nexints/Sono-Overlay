@@ -37,3 +37,4 @@ default-override.ini
 !dependencies/*
 banlist.txt
 addons/*
+build/
